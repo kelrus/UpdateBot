@@ -1,21 +1,21 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 
-KeyBoardMenu = ReplyKeyboardMarkup(resize_keyboard=True)
+keyBoardMenu = ReplyKeyboardMarkup(resize_keyboard=True)
 
-chats = KeyboardButton("Чаты")
-send_message = KeyboardButton("Отправить сообщение")
+_chats = KeyboardButton("Чаты")
+_sendMessage = KeyboardButton("Отправить сообщение")
 
-KeyBoardMenu.add(chats)
-KeyBoardMenu.insert(send_message)
+keyBoardMenu.add(_chats)
+keyBoardMenu.insert(_sendMessage)
 
 
 
-KeyBoardChats = ReplyKeyboardMarkup(resize_keyboard=True)
+keyBoardChats = ReplyKeyboardMarkup(resize_keyboard=True)
 
 _input = KeyboardButton("/inputchat")
 _stop = KeyboardButton("/stopaddchat")
 _info = KeyboardButton("/infochats")
 
-KeyBoardChats.add(_input)
-KeyBoardChats.insert(_stop)
-KeyBoardChats.insert(_info)
+keyBoardChats.add(_input)
+keyBoardChats.insert(_stop)
+keyBoardChats.insert(_info)

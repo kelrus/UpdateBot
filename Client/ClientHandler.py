@@ -3,40 +3,40 @@ from aiogram import Dispatcher, types
 from Client import ClientKeyBoard
 from Server import ServerHandler
 
-AddChatActivate = False
+_addChatActivate = False
 
-async def commandStart(message: types.Message):
-    await message.answer('Бот Запущен', reply_markup=ClientKeyBoard.KeyBoardMenu)
+async def CommandStart(message: types.Message):
+    await message.answer('Бот Запущен', reply_markup=ClientKeyBoard.keyBoardMenu)
 
-async def command_infochats(message: types.Message):
-    await message.answer(str(ServerHandler.getchats()))
+async def CommandInfoChats(message: types.Message):
+    await message.answer(str(ServerHandler.GetChats()))
 
 async def CommandAddChatsKeyboard(message: types.Message):
-    await message.answer('Нажмите на кнопку "/inputchat" и напишите id чата, который хотите добавить', reply_markup=ClientKeyBoard.KeyBoardChats)
+    await message.answer('Нажмите на кнопку "/inputchat" и напишите id чата, который хотите добавить', reply_markup=ClientKeyBoard.keyBoardChats)
 
 async def CommandAddChatInput(message: types.Message):
-    global AddChatActivate
-    AddChatActivate = True
-    await message.answer('введите id чата', reply_markup=ClientKeyBoard.KeyBoardChats)
-    @BotHandler.dp.message_handler()
+    global _addChatActivate
+    _addChatActivate = True
+    await message.answer('введите id чата', reply_markup=ClientKeyBoard.keyBoardChats)
+    @BotHandler.Dp.message_handler()
     async def CommandAddChat(message: types.Message):
-        global AddChatActivate
-        if AddChatActivate == True:
-            ServerHandler.addChats(str(message.text))
-            AddChatActivate = False
+        global _addChatActivate
+        if _addChatActivate == True:
+            ServerHandler.AddChats(str(message.text))
+            _addChatActivate = False
 
 async def CommandAddChatStop(message: types.Message):
     await message.answer('Добавление чатов прервано')
-    global AddChatActivate
-    AddChatActivate = False
+    global _addChatActivate
+    _addChatActivate = False
 
 
 def register_handler_client(dp : Dispatcher):
-    BotHandler.dp.register_message_handler(commandStart, commands=['start', 'help'])
-    BotHandler.dp.register_message_handler(command_infochats, commands=['infochats'])
-    BotHandler.dp.register_message_handler(CommandAddChatsKeyboard, commands=['addchats'])
-    BotHandler.dp.register_message_handler(CommandAddChatInput, commands=['inputchat'])
-    BotHandler.dp.register_message_handler(CommandAddChatStop, commands=['stopaddchat'])
+    BotHandler.Dp.register_message_handler(CommandStart, commands=['start', 'help'])
+    BotHandler.Dp.register_message_handler(CommandInfoChats, commands=['infochats'])
+    BotHandler.Dp.register_message_handler(CommandAddChatsKeyboard, commands=['addchats'])
+    BotHandler.Dp.register_message_handler(CommandAddChatInput, commands=['inputchat'])
+    BotHandler.Dp.register_message_handler(CommandAddChatStop, commands=['stopaddchat'])
 
 
 

@@ -1,11 +1,7 @@
-from aiogram import Dispatcher, types
+_chats = []
 
-import BotHandler
+def GetChats():
+    return _chats
 
-Chats = []
-
-def getchats():
-    return Chats
-
-def addChats(IdChat : str):
-    Chats.append(IdChat)
+def AddChats(IdChat : str):
+    _chats.append(IdChat)
