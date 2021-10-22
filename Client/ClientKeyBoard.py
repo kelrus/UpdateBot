@@ -2,8 +2,8 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 
 keyBoardMenu = ReplyKeyboardMarkup(resize_keyboard=True)
 
-_chats = KeyboardButton("Чаты")
-_sendMessage = KeyboardButton("Отправить сообщение")
+_chats = KeyboardButton("/addchat")
+_sendMessage = KeyboardButton("/sendmessage")
 
 keyBoardMenu.add(_chats)
 keyBoardMenu.insert(_sendMessage)

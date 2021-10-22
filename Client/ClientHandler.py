@@ -5,14 +5,15 @@ from Server import ServerHandler
 
 _addChatActivate = False
 
-async def CommandStart(message: types.Message):
-    await message.answer('Бот Запущен', reply_markup=ClientKeyBoard.keyBoardMenu)
+async def CommandMenu(message: types.Message):
+    await message.answer('/addchat - открывает клавиатуру для добавления чатов \n/sendmessage - отправить сообщения в чаты', reply_markup=ClientKeyBoard.keyBoardMenu)
 
 async def CommandInfoChats(message: types.Message):
     await message.answer(str(ServerHandler.GetChats()))
 
 async def CommandAddChatsKeyboard(message: types.Message):
-    await message.answer('Нажмите на кнопку "/inputchat" и напишите id чата, который хотите добавить', reply_markup=ClientKeyBoard.keyBoardChats)
+    await message.answer('/addchat - добавить чат в список чатов \n/infochats - инфорсация о чатах'
+                         , reply_markup=ClientKeyBoard.keyBoardChats)
 
 async def CommandAddChatInput(message: types.Message):
     global _addChatActivate
@@ -32,11 +33,10 @@ async def CommandAddChatStop(message: types.Message):
 
 
 def register_handler_client(dp : Dispatcher):
-    BotHandler.Dp.register_message_handler(CommandStart, commands=['start', 'help'])
+    BotHandler.Dp.register_message_handler(CommandMenu, commands=['start', 'help', 'menu'])
     BotHandler.Dp.register_message_handler(CommandInfoChats, commands=['infochats'])
-    BotHandler.Dp.register_message_handler(CommandAddChatsKeyboard, commands=['addchats'])
+    BotHandler.Dp.register_message_handler(CommandAddChatsKeyboard, commands=['addchat'])
     BotHandler.Dp.register_message_handler(CommandAddChatInput, commands=['inputchat'])
-    BotHandler.Dp.register_message_handler(CommandAddChatStop, commands=['stopaddchat'])
 
 
 
