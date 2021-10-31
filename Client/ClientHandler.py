@@ -1,6 +1,6 @@
 import BotHandler
-import time
-import schedule
+import aioschedule
+import asyncio
 from aiogram import types
 from Client import ClientKeyBoard
 from Client import DataTimeHandler
@@ -14,7 +14,7 @@ class FSMStorageBot(StatesGroup):
     replyTextSend = State()
     replyTextTime = State()
     replyTextData = State()
-
+    replyTextDelayedSend = State()
 
 async def CommandMenu(message: types.Message):
     await message.answer('/addchat - открывает клавиатуру для добавления чатов \n'
@@ -53,7 +53,7 @@ async def CommandSendMessageAll(message: types.Message, state=FSMContext):
     await state.finish()
 
 async def CommandAddDelayedMessageKeyboard(message: types.Message):
-    await message.answer('/addtime - задаёт врем отправки сообщения. По умолчанию в 00:00 \n'
+    await message.answer('/addtime - задаёт время отправки сообщения. По умолчанию в 23:59 \n'
                          '/adddata - задаёт дату отправки сообщения. По умолчанию берёт текущий день \n'
                          '/addmessage - написать отложенное сообщение'
                          , reply_markup=ClientKeyBoard.keyBoardDelayed)
@@ -87,10 +87,22 @@ async def CommandAddDataFSM(message: types.Message, state=FSMContext):
     await state.finish()
 
 async def CommandDelayedMessage(message: types.Message):
-    await FSMStorageBot.replyTextSend.set()
+    await FSMStorageBot.replyTextDelayedSend.set()
     await message.answer('Напишите сообщение')
 
+async def CommandDelayedMessageAll(message: types.Message,  state=FSMContext):
+    asyncio.create_task( StartDelayedMessage(message, state))
 
+async def StartDelayedMessage(message: types.Message,  state=FSMContext):
+    aioschedule.every().day.at('11:40').do(SendDelayedMessageAll, message, state)
+    await StartPolling()
+
+async def SendDelayedMessageAll(message: types.Message,  state=FSMContext):
+    async with state.proxy() as data:
+        data['replyTextDelayedSend'] = message.text
+        for chatid in ServerHandler.GetChats():
+            await BotHandler.Bot.send_message(chatid, data['replyTextDelayedSend'])
+    await state.finish()
 
 
 def register_handler_client():
@@ -102,6 +114,7 @@ def register_handler_client():
     BotHandler.Dp.register_message_handler(CommandSendMessage, commands=['sendmessage'])
     BotHandler.Dp.register_message_handler(CommandAddChat, state=FSMStorageBot.replyTextChat)
     BotHandler.Dp.register_message_handler(CommandSendMessageAll, state=FSMStorageBot.replyTextSend)
+    BotHandler.Dp.register_message_handler(CommandDelayedMessageAll, state=FSMStorageBot.replyTextDelayedSend)
     BotHandler.Dp.register_message_handler(CommandAddTime, commands=['addtime'])
     BotHandler.Dp.register_message_handler(CommandAddData, commands=['adddata'])
     BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'])
@@ -111,4 +124,8 @@ def register_handler_client():
 
 
 
+async def StartPolling():
+    while True:
+        await aioschedule.run_pending()
+        await asyncio.sleep(1)
 
