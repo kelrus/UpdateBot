@@ -8,6 +8,15 @@ _time = ''
 _hours = ''
 _minute = ''
 
+def Clear():
+    _data = ''
+    _day = ''
+    _month = ''
+    _year = ''
+    _time = ''
+    _hours = ''
+    _minute = ''
+
 def GetData():
     return _data
 
@@ -38,6 +47,19 @@ def SetTime(time: str):
     _time = time
     _hours= str(time[0] + time[1])
     _minute = str(time[3] + time[4])
+
+def CheckMessageOnDataTime(message: str):
+    newdata = ''
+    newtime = ''
+    if IsCorrectData(message[:8]):
+        newdata = message[:8]
+        message = message[9:]
+    if IsCorrectTime(message):
+        newtime = message[:5]
+        message = message[6:]
+    SetTime(newtime)
+    SetData(newdata)
+    return message
 
 def IsCorrectTime(time: str):
     if re.search(r'([2]{1}[0-3]{1}:[0-5]{1}[0-9]{1})|([0-1]{1}[0-9]{1}:[0-5]{1}[0-9]{1})', time):
@@ -71,4 +93,9 @@ def IsCorrectData(data: str):
     if _IsCorrectMonth(month) and _IsCorrectYear(year) and _IsCorrectDay(day):
         if re.search(r'^[0-9]{2}.[0-9]{2}.[0-9]{2}$', data):
             return True
+    return False
+
+def IsCorrectDataTime():
+    if _time != '' and _data != '':
+        return True
     return False

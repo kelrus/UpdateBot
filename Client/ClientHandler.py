@@ -95,16 +95,21 @@ async def CommandDelayedMessageAll(message: types.Message,  state=FSMContext):
 
 async def StartDelayedMessage(message: types.Message,  state=FSMContext):
 
-    BotHandler.Scheduler.add_job(SendDelayedMessageAll, 'date',run_date=DataTimeHandler.GetDataTime() , args=(message, state))
-    BotHandler.Scheduler.start();
+    message.text = DataTimeHandler.CheckMessageOnDataTime(message.text)
+    if(DataTimeHandler.IsCorrectDataTime()):
+        BotHandler.Scheduler.add_job(SendDelayedMessageAll, 'date',run_date=DataTimeHandler.GetDataTime() , args=(message, state))
+        BotHandler.Scheduler.start();
+        DataTimeHandler.Clear()
+    else:
+        message.answer('Неправлиьно указана дата или время')
+    await state.finish()
 
 async def SendDelayedMessageAll(message: types.Message,  state=FSMContext):
     async with state.proxy() as data:
-        data['replyTextDelayedSend'] = message.text
+        data['replyTextDelayedSend'] = str(message.text)
         for chatid in ServerHandler.GetChats():
             await BotHandler.Bot.send_message(chatid, data['replyTextDelayedSend'])
     await state.finish()
-
 
 def register_handler_client():
     BotHandler.Dp.register_message_handler(CommandMenu, commands=['start', 'help', 'menu'])
