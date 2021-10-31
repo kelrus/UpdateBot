@@ -1,4 +1,4 @@
-_chats = []
+_chats = ['-1001560221019', '-1001706459960']
 
 def GetChats():
     return _chats

@@ -1,5 +1,6 @@
 import BotHandler
 import aioschedule
+import apscheduler
 import asyncio
 from aiogram import types
 from Client import ClientKeyBoard
@@ -7,7 +8,6 @@ from Client import DataTimeHandler
 from Server import ServerHandler
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
-
 
 class FSMStorageBot(StatesGroup):
     replyTextChat = State()
@@ -94,8 +94,9 @@ async def CommandDelayedMessageAll(message: types.Message,  state=FSMContext):
     asyncio.create_task( StartDelayedMessage(message, state))
 
 async def StartDelayedMessage(message: types.Message,  state=FSMContext):
-    aioschedule.every().day.at('11:40').do(SendDelayedMessageAll, message, state)
-    await StartPolling()
+
+    BotHandler.Scheduler.add_job(SendDelayedMessageAll, 'date',run_date=DataTimeHandler.GetDataTime() , args=(message, state))
+    BotHandler.Scheduler.start();
 
 async def SendDelayedMessageAll(message: types.Message,  state=FSMContext):
     async with state.proxy() as data:
@@ -120,12 +121,3 @@ def register_handler_client():
     BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'])
     BotHandler.Dp.register_message_handler(CommandAddTimeFSM, state=FSMStorageBot.replyTextTime)
     BotHandler.Dp.register_message_handler(CommandAddDataFSM, state=FSMStorageBot.replyTextData)
-
-
-
-
-async def StartPolling():
-    while True:
-        await aioschedule.run_pending()
-        await asyncio.sleep(1)
-

@@ -5,9 +5,14 @@ _day = ''
 _month = ''
 _year = ''
 _time = ''
+_hours = ''
+_minute = ''
 
 def GetData():
     return _data
+
+def GetDataTime():
+    return datetime(int('20'+ str(_year)),int(_month),int(_day),int(_hours),int(_minute))
 
 def GetDay():
     return _day
@@ -29,13 +34,14 @@ def SetData(data: str):
     _year = str(data[6] + data[7])
 
 def SetTime(time: str):
-    global _time
+    global _time, _hours, _minute
     _time = time
+    _hours= str(time[0] + time[1])
+    _minute = str(time[3] + time[4])
 
 def IsCorrectTime(time: str):
-    if time[0]=='2':
-        if re.search(r'([2]{1}[0-3]{1}:[0-5]{1}[0-9]{1})|([0-1]{1}[0-9]{1}:[0-5]{1}[0-9]{1})', time):
-            return True
+    if re.search(r'([2]{1}[0-3]{1}:[0-5]{1}[0-9]{1})|([0-1]{1}[0-9]{1}:[0-5]{1}[0-9]{1})', time):
+        return True
     return False
 
 def _IsCorrectDay(day: str):
