@@ -1,10 +1,8 @@
 import BotHandler
-import aioschedule
-import apscheduler
 import asyncio
 from aiogram import types
 from Client import ClientKeyBoard
-from Client import DataTimeHandler
+from Server import ChatsHandler, DataTimeHandler
 from Server import ServerHandler
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -94,9 +92,9 @@ async def CommandDelayedMessageAll(message: types.Message,  state=FSMContext):
     asyncio.create_task( StartDelayedMessage(message, state))
 
 async def StartDelayedMessage(message: types.Message,  state=FSMContext):
-    message.text = DataTimeHandler.CheckMessageOnDataTime(message.text)
+    message.text = DataTimeHandler.HandlerMessageOnDataTime(message.text)
     if(DataTimeHandler.IsCorrectDataTime()):
-        BotHandler.Scheduler.add_job(SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime() , args=(message, state))
+        BotHandler.Scheduler.add_job(SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime(), args=(message, state))
         DataTimeHandler.Clear()
     else:
         await message.answer('Неправлиьно указана дата или время')

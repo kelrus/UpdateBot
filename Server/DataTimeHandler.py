@@ -1,5 +1,7 @@
 from datetime import datetime
 import re
+
+
 _data = ''
 _day = ''
 _month = ''
@@ -49,7 +51,7 @@ def SetTime(time: str):
     _hours= str(time[0] + time[1])
     _minute = str(time[3] + time[4])
 
-def CheckMessageOnDataTime(message: str):
+def HandlerMessageOnDataTime(message: str):
     if IsCorrectData(message[:8]):
         SetData(message[:8])
         message = message[9:]
