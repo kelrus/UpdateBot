@@ -94,11 +94,9 @@ async def CommandDelayedMessageAll(message: types.Message,  state=FSMContext):
     asyncio.create_task( StartDelayedMessage(message, state))
 
 async def StartDelayedMessage(message: types.Message,  state=FSMContext):
-
     message.text = DataTimeHandler.CheckMessageOnDataTime(message.text)
     if(DataTimeHandler.IsCorrectDataTime()):
         BotHandler.Scheduler.add_job(SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime() , args=(message, state))
-        BotHandler.Scheduler.start();
         DataTimeHandler.Clear()
     else:
         await message.answer('Неправлиьно указана дата или время')
