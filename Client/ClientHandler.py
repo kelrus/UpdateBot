@@ -6,12 +6,19 @@ from Server import ChatsHandler, DataTimeHandler
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
-class FSMStorageBot(StatesGroup):
+
+class FSMStorageSendBot(StatesGroup):
     replyTextChat = State()
     replyTextSend = State()
     replyTextTime = State()
     replyTextData = State()
     replyTextDelayedSend = State()
+
+class FSMStorageUserBot(StatesGroup):
+    replyTextUserId = State()
+    replyTextUserName = State()
+    replyTextUserGroups = State()
+
 
 async def CommandMenu(message: types.Message):
     await message.answer('/addchat - открывает клавиатуру для добавления чатов \n'
@@ -28,7 +35,7 @@ async def CommandAddChatsKeyboard(message: types.Message):
                          , reply_markup=ClientKeyBoard.keyBoardChats)
 
 async def CommandAddChatInput(message: types.Message):
-    await FSMStorageBot.replyTextChat.set()
+    await FSMStorageSendBot.replyTextChat.set()
     await message.answer('введите id чата')
 
 async def CommandAddChat(message: types.Message, state=FSMContext):
@@ -39,7 +46,7 @@ async def CommandAddChat(message: types.Message, state=FSMContext):
     await state.finish()
 
 async def CommandSendMessage(message: types.Message):
-    await FSMStorageBot.replyTextSend.set()
+    await FSMStorageSendBot.replyTextSend.set()
     await message.answer('Напишите сообщение')
 
 async def CommandSendMessageAll(message: types.Message, state=FSMContext):
@@ -56,7 +63,7 @@ async def CommandAddDelayedMessageKeyboard(message: types.Message):
                          , reply_markup=ClientKeyBoard.keyBoardDelayed)
 
 async def CommandAddTime(message: types.Message):
-    await FSMStorageBot.replyTextTime.set()
+    await FSMStorageSendBot.replyTextTime.set()
     await message.answer('Задайте время сообщения')
 
 async def CommandAddTimeFSM(message: types.Message, state=FSMContext):
@@ -70,7 +77,7 @@ async def CommandAddTimeFSM(message: types.Message, state=FSMContext):
     await state.finish()
 
 async def CommandAddData(message: types.Message):
-    await FSMStorageBot.replyTextData.set()
+    await FSMStorageSendBot.replyTextData.set()
     await message.answer('Задайте дату сообщения')
 
 async def CommandAddDataFSM(message: types.Message, state=FSMContext):
@@ -84,22 +91,22 @@ async def CommandAddDataFSM(message: types.Message, state=FSMContext):
     await state.finish()
 
 async def CommandDelayedMessage(message: types.Message):
-    await FSMStorageBot.replyTextDelayedSend.set()
+    await FSMStorageSendBot.replyTextDelayedSend.set()
     await message.answer('Напишите сообщение')
 
 async def CommandDelayedMessageAll(message: types.Message,  state=FSMContext):
-    asyncio.create_task( StartDelayedMessage(message, state))
+    asyncio.create_task( _StartDelayedMessage(message, state))
 
-async def StartDelayedMessage(message: types.Message,  state=FSMContext):
+async def _StartDelayedMessage(message: types.Message,  state=FSMContext):
     message.text = DataTimeHandler.HandlerMessageOnDataTime(message.text)
     if(DataTimeHandler.IsCorrectDataTime()):
-        BotHandler.Scheduler.add_job(SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime(), args=(message, state))
+        BotHandler.Scheduler.add_job(_SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime(), args=(message, state))
         DataTimeHandler.Clear()
     else:
         await message.answer('Неправлиьно указана дата или время')
     await state.finish()
 
-async def SendDelayedMessageAll(message: types.Message,  state=FSMContext):
+async def _SendDelayedMessageAll(message: types.Message,  state=FSMContext):
     async with state.proxy() as data:
         data['replyTextDelayedSend'] = str(message.text)
         for chatid in ChatsHandler.GetChats():
@@ -113,11 +120,11 @@ def register_handler_client():
     BotHandler.Dp.register_message_handler(CommandAddDelayedMessageKeyboard, commands=['delayedmessage'])
     BotHandler.Dp.register_message_handler(CommandAddChatInput, commands=['inputchat'])
     BotHandler.Dp.register_message_handler(CommandSendMessage, commands=['sendmessage'])
-    BotHandler.Dp.register_message_handler(CommandAddChat, state=FSMStorageBot.replyTextChat)
-    BotHandler.Dp.register_message_handler(CommandSendMessageAll, state=FSMStorageBot.replyTextSend)
-    BotHandler.Dp.register_message_handler(CommandDelayedMessageAll, state=FSMStorageBot.replyTextDelayedSend)
+    BotHandler.Dp.register_message_handler(CommandAddChat, state=FSMStorageSendBot.replyTextChat)
+    BotHandler.Dp.register_message_handler(CommandSendMessageAll, state=FSMStorageSendBot.replyTextSend)
+    BotHandler.Dp.register_message_handler(CommandDelayedMessageAll, state=FSMStorageSendBot.replyTextDelayedSend)
     BotHandler.Dp.register_message_handler(CommandAddTime, commands=['addtime'])
     BotHandler.Dp.register_message_handler(CommandAddData, commands=['adddata'])
     BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'])
-    BotHandler.Dp.register_message_handler(CommandAddTimeFSM, state=FSMStorageBot.replyTextTime)
-    BotHandler.Dp.register_message_handler(CommandAddDataFSM, state=FSMStorageBot.replyTextData)
+    BotHandler.Dp.register_message_handler(CommandAddTimeFSM, state=FSMStorageSendBot.replyTextTime)
+    BotHandler.Dp.register_message_handler(CommandAddDataFSM, state=FSMStorageSendBot.replyTextData)
