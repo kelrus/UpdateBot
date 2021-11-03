@@ -1,17 +1,17 @@
 _chats = ['-1001560221019', '-1001706459960']
 
-_id = ['1386657498']
-_name = ['Владислав']
-_groups = ['Admin']
+_idOwner = [1386657498]
+_nameOwner = ['Владислав']
+_groupsOwner = ['Admin']
 
 _admin = ['AddUser', 'Send']
 _user = ['Send']
 
 _rights = {'Admin':_admin, 'User':_user}
 
-_users = {'id':_id, 'name': _name, 'groups': _groups}
+_users = {'id':_idOwner, 'name': _nameOwner, 'groups': _groupsOwner}
 
-_currentUserInd = str
+_currentUserInd = ''
 
 def GetUsers():
     return _users
@@ -26,7 +26,7 @@ def AddUser(id, name, groups):
     newUser = {'id':id, 'name': name, 'groups': groups}
     _users.update([newUser])
 
-def CkeckUserInDb(idUser: str):
+def _CkeckUserInDb(idUser: str):
     global _currentUserInd
     if idUser in _users.get('id'):
         _currentUserInd = _users.get('id').index(idUser)
@@ -35,7 +35,7 @@ def CkeckUserInDb(idUser: str):
 
 def CheckUserRightsIsAddUser(idUser: str):
     global _currentUserInd
-    if CkeckUserInDb(idUser):
+    if _CkeckUserInDb(idUser):
         if 'AddUser' in _rights.get(_users.get('groups')[_currentUserInd]):
             return True
         return False

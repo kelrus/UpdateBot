@@ -117,7 +117,8 @@ async def CommandAddUserBot(message: types.Message):
     if ChatsHandler.CheckUserRightsIsAddUser(message.from_user.id):
         await FSMStorageUserBot.replyTextUserId.set()
         await message.answer('Веедите id пользователя')
-    else: message.answer('У вас нет прав доступа для добавления пользователей')
+    else:
+        await message.answer('У вас нет прав доступа для добавления пользователей')
 
 async def CommandReplyIdFSM(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
