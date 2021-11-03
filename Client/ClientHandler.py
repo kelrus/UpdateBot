@@ -113,6 +113,30 @@ async def _SendDelayedMessageAll(message: types.Message,  state=FSMContext):
             await BotHandler.Bot.send_message(chatid, data['replyTextDelayedSend'])
     await state.finish()
 
+async def CommandAddUserBot(message: types.Message):
+    if ChatsHandler.CheckUserRightsIsAddUser(message.from_user.id):
+        await FSMStorageUserBot.replyTextUserId.set()
+        await message.answer('Веедите id пользователя')
+    else: message.answer('У вас нет прав доступа для добавления пользователей')
+
+async def CommandReplyIdFSM(message: types.Message, state=FSMContext):
+    async with state.proxy() as data:
+        data['replyTextUserId'] = str(message.text)
+    await FSMStorageUserBot.next()
+    await message.answer('Веедите имя пользователя')
+
+async def CommandReplyNameFSM(message: types.Message, state=FSMContext):
+    async with state.proxy() as data:
+        data['replyTextUserName'] = str(message.text)
+    await FSMStorageUserBot.next()
+    await message.answer('Веедите группу(Права) пользователя')
+
+async def CommandReplyGroupFSM(message: types.Message, state=FSMContext):
+    async with state.proxy() as data:
+        data['replyTextUserGroup'] = str(message.text)
+    await state.finish()
+    await message.answer('Пользователь успешно зарегистрирован')
+
 def register_handler_client():
     BotHandler.Dp.register_message_handler(CommandMenu, commands=['start', 'help', 'menu'])
     BotHandler.Dp.register_message_handler(CommandInfoChats, commands=['infochats'])
@@ -128,3 +152,7 @@ def register_handler_client():
     BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'])
     BotHandler.Dp.register_message_handler(CommandAddTimeFSM, state=FSMStorageSendBot.replyTextTime)
     BotHandler.Dp.register_message_handler(CommandAddDataFSM, state=FSMStorageSendBot.replyTextData)
+    BotHandler.Dp.register_message_handler(CommandAddUserBot, commands=['adduser'])
+    BotHandler.Dp.register_message_handler(CommandReplyIdFSM, state=FSMStorageUserBot.replyTextUserId)
+    BotHandler.Dp.register_message_handler(CommandReplyNameFSM, state=FSMStorageUserBot.replyTextUserName)
+    BotHandler.Dp.register_message_handler(CommandReplyGroupFSM, state=FSMStorageUserBot.replyTextUserGroups)
