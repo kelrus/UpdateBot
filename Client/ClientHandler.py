@@ -3,7 +3,6 @@ import asyncio
 from aiogram import types
 from Client import ClientKeyBoard
 from Server import ChatsHandler, DataTimeHandler
-from Server import ServerHandler
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
@@ -21,7 +20,7 @@ async def CommandMenu(message: types.Message):
                          , reply_markup=ClientKeyBoard.keyBoardMenu)
 
 async def CommandInfoChats(message: types.Message):
-    await message.answer(str(ServerHandler.GetChats()))
+    await message.answer(str(ChatsHandler.GetChats()))
 
 async def CommandAddChatsKeyboard(message: types.Message):
     await message.answer('/addchat - добавить чат в список чатов \n'
@@ -36,7 +35,7 @@ async def CommandAddChat(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data['replyTextChat'] = message.text
     async with state.proxy() as data:
-        ServerHandler.AddChats(str(data['replyTextChat']))
+        ChatsHandler.AddChats(str(data['replyTextChat']))
     await state.finish()
 
 async def CommandSendMessage(message: types.Message):
@@ -46,7 +45,7 @@ async def CommandSendMessage(message: types.Message):
 async def CommandSendMessageAll(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data['replyTextSend'] = message.text
-        for chatid in ServerHandler.GetChats():
+        for chatid in ChatsHandler.GetChats():
             await BotHandler.Bot.send_message(chatid, data['replyTextSend'])
     await state.finish()
 
@@ -103,7 +102,7 @@ async def StartDelayedMessage(message: types.Message,  state=FSMContext):
 async def SendDelayedMessageAll(message: types.Message,  state=FSMContext):
     async with state.proxy() as data:
         data['replyTextDelayedSend'] = str(message.text)
-        for chatid in ServerHandler.GetChats():
+        for chatid in ChatsHandler.GetChats():
             await BotHandler.Bot.send_message(chatid, data['replyTextDelayedSend'])
     await state.finish()
 
