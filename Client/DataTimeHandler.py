@@ -9,6 +9,7 @@ _hours = ''
 _minute = ''
 
 def Clear():
+    global _data, _day, _month, _year, _hours, _minute , _time
     _data = ''
     _day = ''
     _month = ''
@@ -49,16 +50,13 @@ def SetTime(time: str):
     _minute = str(time[3] + time[4])
 
 def CheckMessageOnDataTime(message: str):
-    newdata = ''
-    newtime = ''
     if IsCorrectData(message[:8]):
-        newdata = message[:8]
+        SetData(message[:8])
         message = message[9:]
     if IsCorrectTime(message):
-        newtime = message[:5]
+        SetTime(message[:5])
         message = message[6:]
-    SetTime(newtime)
-    SetData(newdata)
+
     return message
 
 def IsCorrectTime(time: str):
