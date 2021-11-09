@@ -1,15 +1,20 @@
 _chats = ['-1001560221019', '-1001706459960']
 
-_idOwner = [1386657498]
-_nameOwner = ['Владислав']
-_groupsOwner = ['Admin']
+_idOwner = 1386657498
+_nameOwner = 'Владислав'
+_rightsOwner = ['AddUser','AddChat', 'SendMessage']
 
-_admin = ['AddUser', 'Send']
-_user = ['Send']
+_rightsAddUser = "AddUser"
+_rightsAddChats = "AddChat"
+_rightsSendMessage = "SendMessage"
 
-_rights = {'Admin':_admin, 'User':_user}
+_userOwner = dict()
+_userOwner["id"] = _idOwner
+_userOwner["name"] = _nameOwner
+_userOwner["rights"] = _rightsOwner
 
-_users = {'id':_idOwner, 'name': _nameOwner, 'groups': _groupsOwner}
+_users = []
+_users.append(_userOwner)
 
 _currentUserInd = ''
 
@@ -22,20 +27,36 @@ def GetChats():
 def AddChats(IdChat : str):
     _chats.append(IdChat)
 
-def AddUser(id, name, groups):
-    newUser = {'id':id, 'name': name, 'groups': groups}
-    _users.update([newUser])
+def AddUser(id, name, rights):
+    _newUser = dict()
+    _newUser["id"] = _idOwner
+    _newUser["name"] = _nameOwner
+    _newUser["rights"] = _rightsOwner
+    _users.append(_newUser)
+
+def AddRightsSendMessage(idUser: str):
+    s = 1
 
 def _CkeckUserInDb(idUser: str):
     global _currentUserInd
-    if idUser in _users.get('id'):
-        _currentUserInd = _users.get('id').index(idUser)
-        return True
+    num = 0
+    for _user in _users:
+        if int(idUser) == int(_user["id"]):
+            _currentUserInd = num
+            return True
+        num += 1
     return False
 
 def CheckUserRightsIsAddUser(idUser: str):
     global _currentUserInd
     if _CkeckUserInDb(idUser):
-        if 'AddUser' in _rights.get(_users.get('groups')[_currentUserInd]):
+        if _rightsAddUser in (_users[_currentUserInd])["rights"]:
             return True
-        return False
+    return False
+
+def CheckUserRightsIsSendMessage(idUser: str):
+    global _currentUserInd
+    if _CkeckUserInDb(idUser):
+        if _rightsSendMessage in (_users[_currentUserInd])["rights"]:
+            return True
+    return False
