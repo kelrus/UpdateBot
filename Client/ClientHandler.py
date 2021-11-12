@@ -138,6 +138,13 @@ async def CommandReplyGroupFSM(message: types.Message, state=FSMContext):
     await state.finish()
     await message.answer('Пользователь успешно зарегистрирован')
 
+
+async def CommandUsers(message: types.Message):
+    await message.answer('/adduser - добавить пользователя \n'
+                         '/addrigths - добавить права пользователю\n'
+                         '/infousers - информация о текущих пользователях'
+                         , reply_markup=ClientKeyBoard.keyBoardUsers)
+
 def register_handler_client():
     BotHandler.Dp.register_message_handler(CommandMenu, commands=['start', 'help', 'menu'])
     BotHandler.Dp.register_message_handler(CommandInfoChats, commands=['infochats'])
@@ -153,7 +160,8 @@ def register_handler_client():
     BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'])
     BotHandler.Dp.register_message_handler(CommandAddTimeFSM, state=FSMStorageSendBot.replyTextTime)
     BotHandler.Dp.register_message_handler(CommandAddDataFSM, state=FSMStorageSendBot.replyTextData)
-    BotHandler.Dp.register_message_handler(CommandAddUserBot, commands=['adduser'])
     BotHandler.Dp.register_message_handler(CommandReplyIdFSM, state=FSMStorageUserBot.replyTextUserId)
     BotHandler.Dp.register_message_handler(CommandReplyNameFSM, state=FSMStorageUserBot.replyTextUserName)
-    BotHandler.Dp.register_message_handler(CommandReplyGroupFSM, state=FSMStorageUserBot.replyTextUserGroups)
+    BotHandler.Dp.register_message_handler(CommandReplyGroupFSM, state=FSMStorageUserBot.replyTextUserRights)
+    BotHandler.Dp.register_message_handler(CommandUsers, commands=['users'])
+    BotHandler.Dp.register_message_handler(CommandAddUserBot, commands=['adduser'])
