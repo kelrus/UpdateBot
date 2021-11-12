@@ -17,7 +17,7 @@ class FSMStorageSendBot(StatesGroup):
 class FSMStorageUserBot(StatesGroup):
     replyTextUserId = State()
     replyTextUserName = State()
-    replyTextUserGroups = State()
+    replyTextUserRights = State()
 
 
 async def CommandMenu(message: types.Message):
@@ -46,8 +46,11 @@ async def CommandAddChat(message: types.Message, state=FSMContext):
     await state.finish()
 
 async def CommandSendMessage(message: types.Message):
-    await FSMStorageSendBot.replyTextSend.set()
-    await message.answer('Напишите сообщение')
+    if ChatsHandler.CheckUserRightsIsSendMessage(message.from_user.id):
+        await FSMStorageSendBot.replyTextSend.set()
+        await message.answer('Напишите сообщение')
+    else:
+        await message.answer('У вас нет прав доступа для отправки сообщения')
 
 async def CommandSendMessageAll(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
@@ -130,11 +133,12 @@ async def CommandReplyNameFSM(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data['replyTextUserName'] = str(message.text)
     await FSMStorageUserBot.next()
-    await message.answer('Веедите группу(Права) пользователя')
+    await message.answer('Выберите права пользователя')
 
 async def CommandReplyGroupFSM(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
-        data['replyTextUserGroup'] = str(message.text)
+        data['replyTextUserRights'] = str(message.text)
+    ChatsHandler.AddUser(data['replyTextUserId'], data['replyTextUserName'], data['replyTextUserRights'])
     await state.finish()
     await message.answer('Пользователь успешно зарегистрирован')
 

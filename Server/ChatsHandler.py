@@ -29,10 +29,11 @@ def AddChats(IdChat : str):
 
 def AddUser(id, name, rights):
     _newUser = dict()
-    _newUser["id"] = _idOwner
-    _newUser["name"] = _nameOwner
-    _newUser["rights"] = _rightsOwner
+    _newUser["id"] = int(id)
+    _newUser["name"] = name
+    _newUser["rights"] = [rights]
     _users.append(_newUser)
+    print(_users)
 
 def AddRightsSendMessage(idUser: str):
     s = 1
