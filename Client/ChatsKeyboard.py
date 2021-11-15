@@ -33,6 +33,6 @@ async def CommandInfoChats(message: types.Message):
 
 
 def register_handler_chats():
-    BotHandler.Dp.register_message_handler(CommandAddChatInput, commands=['addchat'])
+    BotHandler.Dp.register_message_handler(CommandAddChatInput, commands=['addchat'], state = None)
     BotHandler.Dp.register_message_handler(CommandAddChat, state=FSMStorageChatsBot.replyInputChat)
     BotHandler.Dp.register_message_handler(CommandInfoChats, commands=['infochats'])

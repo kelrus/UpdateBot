@@ -75,9 +75,9 @@ async def _SendDelayedMessageAll(message: types.Message, state=FSMContext):
 
 
 def register_handler_delayed_message():
-    BotHandler.Dp.register_message_handler(CommandAddTime, commands=['addtime'])
+    BotHandler.Dp.register_message_handler(CommandAddTime, commands=['addtime'], state = None)
     BotHandler.Dp.register_message_handler(CommandAddTimeFSM, state=FSMStorageDelayedSendBot.replyTextTime)
-    BotHandler.Dp.register_message_handler(CommandAddData, commands=['adddata'])
+    BotHandler.Dp.register_message_handler(CommandAddData, commands=['adddata'], state = None)
     BotHandler.Dp.register_message_handler(CommandAddDataFSM, state=FSMStorageDelayedSendBot.replyTextData)
+    BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'], state=None)
     BotHandler.Dp.register_message_handler(CommandDelayedMessageAll, state=FSMStorageDelayedSendBot.replyTextDelayedSend)
-    BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'])

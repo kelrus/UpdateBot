@@ -45,7 +45,7 @@ async def CommandReplyGroupFSM(message: types.Message, state=FSMContext):
 
 
 def register_handler_users():
-    BotHandler.Dp.register_message_handler(CommandAddUserBot, commands=['adduser'])
+    BotHandler.Dp.register_message_handler(CommandAddUserBot, commands=['adduser'], state = None)
     BotHandler.Dp.register_message_handler(CommandReplyIdFSM, state=FSMStorageUserBot.replyTextUserId)
     BotHandler.Dp.register_message_handler(CommandReplyNameFSM, state=FSMStorageUserBot.replyTextUserName)
     BotHandler.Dp.register_message_handler(CommandReplyGroupFSM, state=FSMStorageUserBot.replyTextUserRights)
