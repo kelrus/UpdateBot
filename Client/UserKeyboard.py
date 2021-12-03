@@ -34,7 +34,6 @@ async def CommandReplyNameFSM(message: types.Message, state=FSMContext):
 async def CommandReplyGroupFSM(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data['replyTextUserRights'] = str(message.text)
-    ChatsHandler.AddUser(data['replyTextUserId'], data['replyTextUserName'], data['replyTextUserRights'])
     await DataBase.SqlAddUser(state)
     await state.finish()
     await message.answer('Пользователь успешно зарегистрирован')

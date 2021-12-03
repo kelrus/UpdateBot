@@ -25,14 +25,6 @@ def GetChats():
 def AddChats(IdChat : str):
     _chats.append(IdChat)
 
-def AddUser(id, name, rights):
-    _newUser = dict()
-    _newUser["id"] = int(id)
-    _newUser["name"] = name
-    _newUser["rights"] = [rights]
-    _users.append(_newUser)
-    print(_users)
-
 def _CkeckUserInDb(idUser: str):
     global _currentUserInd
     num = 0
