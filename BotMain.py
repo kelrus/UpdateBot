@@ -6,13 +6,19 @@ import BotHandler
 import asyncio
 
 
+
+
+
 async def scheduler():
     BotHandler.Scheduler.start()
 
 async def on_startup(_):
+    ClientHandler.register_handler_client()
+    DataBase.SqlStart()
     asyncio.create_task(scheduler())
 
-ClientHandler.register_handler_client()
-DataBase.sql_start()
+
+
+
 
 executor.start_polling(Dp, skip_updates=True, on_startup=on_startup)

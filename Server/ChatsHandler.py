@@ -2,11 +2,9 @@ _chats = ['-1001560221019', '-1001706459960']
 
 _idOwner = 1386657498
 _nameOwner = 'Владислав'
-_rightsOwner = ['AddUser','AddChat', 'SendMessage']
+_rightsOwner = ['BotAccess']
 
-_rightsAddUser = "AddUser"
-_rightsAddChats = "AddChat"
-_rightsSendMessage = "SendMessage"
+_rightsBotAccess= "BotAccess"
 
 _userOwner = dict()
 _userOwner["id"] = _idOwner
@@ -35,9 +33,6 @@ def AddUser(id, name, rights):
     _users.append(_newUser)
     print(_users)
 
-def AddRightsSendMessage(idUser: str):
-    s = 1
-
 def _CkeckUserInDb(idUser: str):
     global _currentUserInd
     num = 0
@@ -48,16 +43,9 @@ def _CkeckUserInDb(idUser: str):
         num += 1
     return False
 
-def CheckUserRightsIsAddUser(idUser: str):
+def CheckUserRightsIsBotAccess(idUser: str):
     global _currentUserInd
     if _CkeckUserInDb(idUser):
-        if _rightsAddUser in (_users[_currentUserInd])["rights"]:
-            return True
-    return False
-
-def CheckUserRightsIsSendMessage(idUser: str):
-    global _currentUserInd
-    if _CkeckUserInDb(idUser):
-        if _rightsSendMessage in (_users[_currentUserInd])["rights"]:
+        if _rightsBotAccess in (_users[_currentUserInd])["rights"]:
             return True
     return False

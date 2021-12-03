@@ -39,7 +39,7 @@ async def CommandAddDelayedMessageKeyboard(message: types.Message):
 
 
 async def CommandSendMessage(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsSendMessage(message.from_user.id):
+    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await FSMStorageSendBot.replyTextSend.set()
         await message.answer('Напишите сообщение')
     else:
