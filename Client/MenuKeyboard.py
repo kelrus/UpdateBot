@@ -66,7 +66,7 @@ async def CommandSendMessageAll(message: types.Message, state = FSMContext):
 async def CommandUsers(message: types.Message):
     if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await message.answer('/adduser - добавить пользователя \n'
-                             '/addrigths - добавить права пользователю\n'
+                             '/addrigths - добавить права пользователю(NONE)\n'
                              '/infousers - информация о текущих пользователях\n'
                              '/cancel - отменить предыдущее действие'
                              , reply_markup=Keyboards.keyBoardUsers)

@@ -14,12 +14,15 @@ async def SqlAddUser(state):
         cur.execute('INSERT INTO users VALUES(?,?,?)', tuple(data.values()))
         base.commit()
 
-async def SqlAddChats(id):
+def SqlAddChats(id):
     cur.execute('INSERT INTO chats VALUES(?)', tuple(id))
     base.commit()
 
 def SqlGetUsers():
     return cur.execute("SELECT id FROM users").fetchall()
+
+def SqlGetUsersInfo():
+    return cur.execute("SELECT * FROM users").fetchall()
 
 def SqlGetChats():
     return cur.execute("SELECT id FROM chats").fetchall()

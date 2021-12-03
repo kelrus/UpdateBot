@@ -39,6 +39,14 @@ async def CommandReplyGroupFSM(message: types.Message, state=FSMContext):
 
 
 
+async def CommandInfoUsers(message: types.Message):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+        await message.answer(str(ChatsHandler.GetUsersInfo()))
+    else:
+        await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
+
+
+
 
 
 def register_handler_users():
@@ -46,4 +54,5 @@ def register_handler_users():
     BotHandler.Dp.register_message_handler(CommandReplyIdFSM, state=FSMStorageUserBot.replyTextUserId)
     BotHandler.Dp.register_message_handler(CommandReplyNameFSM, state=FSMStorageUserBot.replyTextUserName)
     BotHandler.Dp.register_message_handler(CommandReplyGroupFSM, state=FSMStorageUserBot.replyTextUserRights)
+    BotHandler.Dp.register_message_handler(CommandInfoUsers, commands=['infousers'], state=None)
 

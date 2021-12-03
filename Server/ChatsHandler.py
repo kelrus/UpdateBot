@@ -1,13 +1,16 @@
 from Server import DataBase
 
-async def GetUsers():
+def GetUsers():
     return DataBase.SqlGetUsers()
 
-async def GetChats():
+def GetUsersInfo():
+    return DataBase.SqlGetUsersInfo()
+
+def GetChats():
     return DataBase.SqlGetChats()
 
-async def AddChats(IdChat : str):
-    await DataBase.SqlAddChats(IdChat)
+def AddChats(IdChat : str):
+    DataBase.SqlAddChats(IdChat)
 
 async def AddUser(state):
     await DataBase.SqlAddUser(state)
