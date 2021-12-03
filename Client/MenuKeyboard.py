@@ -8,17 +8,22 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 class FSMStorageSendBot(StatesGroup):
     replyTextSend = State()
 
-
+class FSMStorageUserFirstBot(StatesGroup):
+    replyTextUserId = State()
+    replyTextUserName = State()
+    replyTextUserRights = State()
 
 
 
 async def CommandMenuKeyboard(message: types.Message):
-    await message.answer('/addchat - открывает клавиатуру для добавления чатов \n'
-                         '/sendmessage - отправить сообщения в чаты\n'
-                         '/delayednessage - добавить отложенное сообщение\n'
-                         '/cancel - отменить предыдущее действие'
-                          , reply_markup=Keyboards.keyboardMenu)
-
+    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+        await message.answer('/addchat - открывает клавиатуру для добавления чатов \n'
+                             '/sendmessage - отправить сообщения в чаты\n'
+                             '/delayednessage - добавить отложенное сообщение\n'
+                             '/cancel - отменить предыдущее действие'
+                             , reply_markup=Keyboards.keyboardMenu)
+    else:
+        await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 
 async def CommandAddChatsKeyboard(message: types.Message):
