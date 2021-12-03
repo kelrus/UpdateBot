@@ -23,11 +23,9 @@ keyboardMenu.insert(_delayedMessage)
 keyboardChats = ReplyKeyboardMarkup(resize_keyboard=True)
 
 _inputChat = KeyboardButton("/addchat")
-_stop = KeyboardButton("/stopaddchat")
 _info = KeyboardButton("/infochats")
 
 keyboardChats.add(_inputChat)
-keyboardChats.insert(_stop)
 keyboardChats.insert(_info)
 
 

@@ -29,7 +29,7 @@ async def CommandMenuKeyboard(message: types.Message):
 async def CommandAddChatsKeyboard(message: types.Message):
     if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await message.answer('/addchat - добавить чат в список чатов \n'
-                             '/infochats - инфорсация о чатах\n'
+                             '/infochats - информация о чатах\n'
                              '/cancel - отменить предыдущее действие'
                              , reply_markup=Keyboards.keyboardChats)
     else:
