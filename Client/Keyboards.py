@@ -49,9 +49,7 @@ keyboardDelayed.insert(_message)
 keyBoardUsers = ReplyKeyboardMarkup(resize_keyboard=True)
 
 _addUser = KeyboardButton("/adduser")
-_addRigthts = KeyboardButton("/addrigths")
 _infoUsers = KeyboardButton("/infousers")
 
 keyBoardUsers.add(_infoUsers)
 keyBoardUsers.add(_addUser)
-keyBoardUsers.insert(_addRigthts)

@@ -17,9 +17,9 @@ class FSMStorageUserFirstBot(StatesGroup):
 
 async def CommandMenuKeyboard(message: types.Message):
     if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
-        await message.answer('/addchat - открывает клавиатуру для добавления чатов \n'
+        await message.answer('/addchatkeyboard" - открывает клавиатуру для добавления чатов \n'
                              '/sendmessage - отправить сообщения в чаты\n'
-                             '/delayednessage - добавить отложенное сообщение\n'
+                             '/delayedmessagekeyboard - добавить отложенное сообщение\n'
                              '/cancel - отменить предыдущее действие'
                              , reply_markup=Keyboards.keyboardMenu)
     else:
@@ -66,7 +66,6 @@ async def CommandSendMessageAll(message: types.Message, state = FSMContext):
 async def CommandUsers(message: types.Message):
     if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await message.answer('/adduser - добавить пользователя \n'
-                             '/addrigths - добавить права пользователю(NONE)\n'
                              '/infousers - информация о текущих пользователях\n'
                              '/cancel - отменить предыдущее действие'
                              , reply_markup=Keyboards.keyBoardUsers)

@@ -77,7 +77,7 @@ async def _SendDelayedMessageAll(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data['replyTextDelayedSend'] = str(message.text)
         for chatid in ChatsHandler.GetChats():
-            await BotHandler.Bot.send_message(chatid, data['replyTextDelayedSend'])
+            await BotHandler.Bot.send_message(int(chatid[0]), data['replyTextDelayedSend'])
     await state.finish()
 
 
