@@ -7,7 +7,10 @@ def GetChats():
     return DataBase.SqlGetChats()
 
 def AddChats(IdChat : str):
-    DataBase.SqlAddChats(IdChat)
+    await DataBase.SqlAddChats(IdChat)
+
+def AddUser(state):
+    await DataBase.SqlAddUser(state)
 
 def CheckUserRightsIsBotAccess(idUser: str):
     print(DataBase.SqlSearchRightsById(idUser))

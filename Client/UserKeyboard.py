@@ -3,7 +3,6 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from Server import ChatsHandler
-from Server import DataBase
 
 class FSMStorageUserBot(StatesGroup):
     replyTextUserId = State()
@@ -17,7 +16,7 @@ async def CommandAddUserBot(message: types.Message):
         await FSMStorageUserBot.replyTextUserId.set()
         await message.answer('Веедите id пользователя')
     else:
-        await message.answer('У вас нет прав доступа для добавления пользователей')
+        await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 async def CommandReplyIdFSM(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
@@ -34,7 +33,7 @@ async def CommandReplyNameFSM(message: types.Message, state=FSMContext):
 async def CommandReplyGroupFSM(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data['replyTextUserRights'] = str(message.text)
-    await DataBase.SqlAddUser(state)
+    await ChatsHandler.AddUser(state)
     await state.finish()
     await message.answer('Пользователь успешно зарегистрирован')
 

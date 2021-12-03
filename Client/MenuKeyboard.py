@@ -27,20 +27,24 @@ async def CommandMenuKeyboard(message: types.Message):
 
 
 async def CommandAddChatsKeyboard(message: types.Message):
-    await message.answer('/addchat - добавить чат в список чатов \n'
-                         '/infochats - инфорсация о чатах\n'
-                         '/cancel - отменить предыдущее действие'
-                         , reply_markup=Keyboards.keyboardChats)
-
+    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+        await message.answer('/addchat - добавить чат в список чатов \n'
+                             '/infochats - инфорсация о чатах\n'
+                             '/cancel - отменить предыдущее действие'
+                             , reply_markup=Keyboards.keyboardChats)
+    else:
+        await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 
 async def CommandAddDelayedMessageKeyboard(message: types.Message):
-    await message.answer('/addtime - задаёт время отправки сообщения. По умолчанию в 23:59 \n'
-                         '/adddata - задаёт дату отправки сообщения. По умолчанию берёт текущий день \n'
-                         '/addmessage - написать отложенное сообщение\n'
-                         '/cancel - отменить предыдущее действие'
-                         , reply_markup=Keyboards.keyboardDelayed)
-
+    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+        await message.answer('/addtime - задаёт время отправки сообщения. По умолчанию в 23:59 \n'
+                             '/adddata - задаёт дату отправки сообщения. По умолчанию берёт текущий день \n'
+                             '/addmessage - написать отложенное сообщение\n'
+                             '/cancel - отменить предыдущее действие'
+                             , reply_markup=Keyboards.keyboardDelayed)
+    else:
+        await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 
 async def CommandSendMessage(message: types.Message):
@@ -48,7 +52,7 @@ async def CommandSendMessage(message: types.Message):
         await FSMStorageSendBot.replyTextSend.set()
         await message.answer('Напишите сообщение')
     else:
-        await message.answer('У вас нет прав доступа для отправки сообщения')
+        await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 async def CommandSendMessageAll(message: types.Message, state = FSMContext):
     async with state.proxy() as data:
@@ -60,12 +64,14 @@ async def CommandSendMessageAll(message: types.Message, state = FSMContext):
 
 
 async def CommandUsers(message: types.Message):
-    await message.answer('/adduser - добавить пользователя \n'
-                         '/addrigths - добавить права пользователю\n'
-                         '/infousers - информация о текущих пользователях\n'
-                         '/cancel - отменить предыдущее действие'
-                         , reply_markup=Keyboards.keyBoardUsers)
-
+    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+        await message.answer('/adduser - добавить пользователя \n'
+                             '/addrigths - добавить права пользователю\n'
+                             '/infousers - информация о текущих пользователях\n'
+                             '/cancel - отменить предыдущее действие'
+                             , reply_markup=Keyboards.keyBoardUsers)
+    else:
+        await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 
 
