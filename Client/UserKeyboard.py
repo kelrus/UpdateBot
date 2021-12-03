@@ -12,7 +12,7 @@ class FSMStorageUserBot(StatesGroup):
 
 
 async def CommandAddUserBot(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await FSMStorageUserBot.replyTextUserId.set()
         await message.answer('Веедите id пользователя')
     else:

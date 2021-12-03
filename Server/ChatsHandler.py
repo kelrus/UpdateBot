@@ -1,19 +1,18 @@
 from Server import DataBase
 
-def GetUsers():
+async def GetUsers():
     return DataBase.SqlGetUsers()
 
-def GetChats():
+async def GetChats():
     return DataBase.SqlGetChats()
 
-def AddChats(IdChat : str):
+async def AddChats(IdChat : str):
     await DataBase.SqlAddChats(IdChat)
 
-def AddUser(state):
+async def AddUser(state):
     await DataBase.SqlAddUser(state)
 
-def CheckUserRightsIsBotAccess(idUser: str):
-    print(DataBase.SqlSearchRightsById(idUser))
+async def CheckUserRightsIsBotAccess(idUser: str):
     if DataBase.SqlSearchRightsById(idUser) != []:
         return True
     return False

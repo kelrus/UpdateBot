@@ -13,7 +13,7 @@ class FSMStorageChatsBot(StatesGroup):
 
 
 async def CommandAddChatInput(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await FSMStorageChatsBot.replyInputChat.set()
         await message.answer('введите id чата')
     else:
@@ -29,7 +29,7 @@ async def CommandAddChat(message: types.Message, state=FSMContext):
 
 
 async def CommandInfoChats(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await message.answer(str(ChatsHandler.GetChats()))
     else:
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')

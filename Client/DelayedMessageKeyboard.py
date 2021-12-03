@@ -16,7 +16,7 @@ class FSMStorageDelayedSendBot(StatesGroup):
 
 
 async def CommandAddTime(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await FSMStorageDelayedSendBot.replyTextTime.set()
         await message.answer('Задайте время сообщения')
     else:
@@ -36,7 +36,7 @@ async def CommandAddTimeFSM(message: types.Message, state=FSMContext):
 
 
 async def CommandAddData(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await FSMStorageDelayedSendBot.replyTextData.set()
         await message.answer('Задайте дату сообщения')
     else:
@@ -55,7 +55,7 @@ async def CommandAddDataFSM(message: types.Message, state=FSMContext):
 
 
 async def CommandDelayedMessage(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await FSMStorageDelayedSendBot.replyTextDelayedSend.set()
         await message.answer('Напишите сообщение')
     else:

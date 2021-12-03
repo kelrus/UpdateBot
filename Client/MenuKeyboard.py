@@ -16,7 +16,7 @@ class FSMStorageUserFirstBot(StatesGroup):
 
 
 async def CommandMenuKeyboard(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await message.answer('/addchat - открывает клавиатуру для добавления чатов \n'
                              '/sendmessage - отправить сообщения в чаты\n'
                              '/delayednessage - добавить отложенное сообщение\n'
@@ -27,7 +27,7 @@ async def CommandMenuKeyboard(message: types.Message):
 
 
 async def CommandAddChatsKeyboard(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await message.answer('/addchat - добавить чат в список чатов \n'
                              '/infochats - инфорсация о чатах\n'
                              '/cancel - отменить предыдущее действие'
@@ -37,7 +37,7 @@ async def CommandAddChatsKeyboard(message: types.Message):
 
 
 async def CommandAddDelayedMessageKeyboard(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await message.answer('/addtime - задаёт время отправки сообщения. По умолчанию в 23:59 \n'
                              '/adddata - задаёт дату отправки сообщения. По умолчанию берёт текущий день \n'
                              '/addmessage - написать отложенное сообщение\n'
@@ -48,7 +48,7 @@ async def CommandAddDelayedMessageKeyboard(message: types.Message):
 
 
 async def CommandSendMessage(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await FSMStorageSendBot.replyTextSend.set()
         await message.answer('Напишите сообщение')
     else:
@@ -64,7 +64,7 @@ async def CommandSendMessageAll(message: types.Message, state = FSMContext):
 
 
 async def CommandUsers(message: types.Message):
-    if ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await message.answer('/adduser - добавить пользователя \n'
                              '/addrigths - добавить права пользователю\n'
                              '/infousers - информация о текущих пользователях\n'
