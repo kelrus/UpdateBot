@@ -142,3 +142,9 @@ cython_debug/
 .idea/workspace.xml
 
 *.db
+
+.project
+
+.dbeaver/
+
+.idea/
