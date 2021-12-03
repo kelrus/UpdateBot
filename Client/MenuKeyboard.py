@@ -58,7 +58,7 @@ async def CommandSendMessageAll(message: types.Message, state = FSMContext):
     async with state.proxy() as data:
         data['replyTextSend'] = message.text
     for chatid in ChatsHandler.GetChats():
-        await BotHandler.Bot.send_message(chatid, data['replyTextSend'])
+        await BotHandler.Bot.send_message(int(chatid[0]), data['replyTextSend'])
     await state.finish()
 
 
