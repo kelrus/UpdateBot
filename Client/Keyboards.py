@@ -1,15 +1,15 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 
 
+keyboardMenu = InlineKeyboardMarkup(row_width=2)
 
-keyboardMenu = ReplyKeyboardMarkup(resize_keyboard=True)
-
-_chats = KeyboardButton("/addchatkeyboard")
-_sendMessage = KeyboardButton("/sendmessage")
-_delayedMessage = KeyboardButton("/delayedmessagekeyboard")
-_users = KeyboardButton("/users")
+_chats = InlineKeyboardButton(text="Управление чатами", callback_data='addchatkeyboard')
+_sendMessage = InlineKeyboardButton(text="Отправить сообщение", callback_data='sendmessage')
+_delayedMessage = InlineKeyboardButton(text="Отложить сообщение", callback_data='delayedmessagekeyboard')
+_users = InlineKeyboardButton(text="Управление пользователями", callback_data='users')
 
 keyboardMenu.add(_chats)
 keyboardMenu.insert(_users)
