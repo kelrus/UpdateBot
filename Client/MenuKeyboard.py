@@ -81,12 +81,11 @@ async def CommandSendMessage(callback: types.CallbackQuery):
     else:
         await callback.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
-async def CommandSendMessageAll(callback: types.CallbackQuery, state = FSMContext):
+async def CommandSendMessageAll(message: types.Message, state = FSMContext):
     async with state.proxy() as data:
-        data['replyTextSend'] = callback.message.text
+        data['replyTextSend'] = message.text
     for chatid in ChatsHandler.GetChats():
         await BotHandler.Bot.send_message(int(chatid[0]), data['replyTextSend'])
-    await callback.answer()
     await state.finish()
 
 
