@@ -36,13 +36,9 @@ keyboardChats.insert(_info)
 
 keyboardDelayed = ReplyKeyboardMarkup(resize_keyboard=True)
 
-_time = KeyboardButton("/addtime")
-_data = KeyboardButton("/adddata")
 _message = KeyboardButton("/addmessage")
 
-keyboardDelayed.add(_data)
-keyboardDelayed.insert(_time)
-keyboardDelayed.insert(_message)
+keyboardDelayed.add(_message)
 
 
 

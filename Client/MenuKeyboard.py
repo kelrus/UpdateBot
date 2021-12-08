@@ -30,8 +30,6 @@ async def CommandStartHelp(message: types.Message):
                              '/deleteuser - добавить пользователя \n'
                              '/infousers - информация о текущих пользователях\n\n'
                              'Управление сообщениями:\n'
-                             '/addtime - задаёт время отправки сообщения. По умолчанию в 23:59 \n'
-                             '/adddata - задаёт дату отправки сообщения. По умолчанию берёт текущий день \n'
                              '/addmessage - написать отложенное сообщение\n')
     else:
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
@@ -65,8 +63,8 @@ async def CommandAddChatsKeyboard(callback: types.CallbackQuery):
 
 async def CommandAddDelayedMessageKeyboard(callback: types.CallbackQuery):
     if await ChatsHandler.CheckUserRightsIsBotAccess(callback.from_user.id):
-        await callback.message.answer('/addtime - задаёт время отправки сообщения. По умолчанию в 23:59 \n'
-                             '/adddata - задаёт дату отправки сообщения. По умолчанию берёт текущий день \n'
+        await callback.message.answer('/Для ввода времени сообщения используйте формат дд.мм.гг чч:мм /"соообщение/"\n'
+                             'При пустом вводе времени или даты, будет использовано текущее время или дата\n'
                              '/addmessage - написать отложенное сообщение\n'
                              '/cancel - отменить предыдущее действие'
                              , reply_markup=Keyboards.keyboardDelayed)
