@@ -6,7 +6,7 @@ def SqlStart():
     cur = base.cursor()
     base.execute('CREATE TABLE IF NOT EXISTS users(id INT PRIMARY KEY, name TEXT, rights TEXT)')
     base.commit()
-    base.execute('CREATE TABLE IF NOT EXISTS chats(id TEXT INT PRIMARY KEY)')
+    base.execute('CREATE TABLE IF NOT EXISTS chats(id INT PRIMARY KEY)')
     base.commit()
 
 async def SqlAddUser(state):
@@ -15,7 +15,7 @@ async def SqlAddUser(state):
         base.commit()
 
 def SqlAddChats(id):
-    cur.execute('INSERT INTO chats VALUES(?)', tuple(id))
+    cur.execute('INSERT INTO chats VALUES(?)', (id,))
     base.commit()
 
 def SqlGetUsers():
