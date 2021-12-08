@@ -26,7 +26,13 @@ async def CommandDelayedMessageAll(message: types.Message, state=FSMContext):
 
 async def _StartDelayedMessage(message: types.Message, state=FSMContext):
     message.text = DataTimeHandler.HandlerMessageOnDataTime(message.text)
-    BotHandler.Scheduler.add_job(_SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime(), args=(message, state))
+    if(DataTimeHandler.IsCurrentDataTime()):
+        async with state.proxy() as data:
+            data['replyTextDelayedSend'] = str(message.text)
+            for chatid in ChatsHandler.GetChats():
+                await BotHandler.Bot.send_message(int(chatid[0]), data['replyTextDelayedSend'])
+    else:
+        BotHandler.Scheduler.add_job(_SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime(), args=(message, state))
     DataTimeHandler.Clear()
 
     await state.finish()
