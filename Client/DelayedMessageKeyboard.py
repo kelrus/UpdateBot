@@ -32,7 +32,10 @@ async def _StartDelayedMessage(message: types.Message, state=FSMContext):
             for chatid in ChatsHandler.GetChats():
                 await BotHandler.Bot.send_message(int(chatid[0]), data['replyTextDelayedSend'])
     else:
-        BotHandler.Scheduler.add_job(_SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime(), args=(message, state))
+        if(DataTimeHandler.IsCorrectAlarmTime()):
+            message.text = "Внимание, через 30 минут: \n\n" + message.text
+            BotHandler.Scheduler.add_job(_SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime(True), args=(message, state))
+        BotHandler.Scheduler.add_job(_SendDelayedMessageAll, 'date', run_date=DataTimeHandler.GetDataTime(),args=(message, state))
     DataTimeHandler.Clear()
 
     await state.finish()

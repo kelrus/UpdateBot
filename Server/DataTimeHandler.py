@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timedelta
 import re
 
 
@@ -27,12 +28,9 @@ def Clear():
 def GetData():
     return _data
 
-def GetDataTime():
-    print(_hours)
-    print(_minute)
-    print(_year)
-    print(_day)
-    print(_month)
+def GetDataTime(alarm = False):
+    if(alarm):
+        return datetime(int(_year),int(_month),int(_day),int(_hours),int(_minute)) - timedelta(minutes=30)
     return datetime(int(_year),int(_month),int(_day),int(_hours),int(_minute))
 
 def GetDay():
@@ -48,9 +46,7 @@ def GetTime():
     return _time
 
 def SetData(data: str):
-    print(data)
     global  _data, _day, _month, _year, _isCurrentData
-    print(datetime.now().date())
     if(str(datetime.now().date()) == data):
         _isCurrentData = True
 
@@ -61,12 +57,12 @@ def SetData(data: str):
 
 
 def SetTime(time: str):
-    print(time)
     global _time, _hours, _minute, _isCurrentTime
 
     if((str(datetime.now().time()))[:5] == str(time[:5])):
         _isCurrentTime = True
 
+    _time = time
     _hours= str(time[0] + time[1])
     _minute = str(time[3] + time[4])
 
@@ -112,15 +108,17 @@ def _IsCorrectMonth(month: str):
 
 def _IsCorrectYear(year: str):
     yearFull= '20'+str(year)
-    if int(yearFull)>=datetime.now().year:
-        if re.search(r'^[2-9]{1}[0-9]{1}$', year):
+    if re.search(r'^[2-9]{1}[0-9]{1}$', year):
+        if int(yearFull) >= datetime.now().year:
             return True
     return False
 
 def IsCurrentDataTime():
-    print(_isCurrentTime)
-    print(_isCurrentData)
     if(_isCurrentTime == True and _isCurrentData == True):
         return True
     return False
 
+def IsCorrectAlarmTime():
+    if datetime.now() < (datetime(int(_year),int(_month),int(_day),int(_hours),int(_minute)) - timedelta(minutes=30)):
+        return True
+    return False
