@@ -27,6 +27,7 @@ async def CommandStartHelp(message: types.Message):
                              '/infochats - информация о чатах\n\n'
                              'Управление пользователями:\n'
                              '/adduser - добавить пользователя \n'
+                             '/deleteuser - добавить пользователя \n'
                              '/infousers - информация о текущих пользователях\n\n'
                              'Управление сообщениями:\n'
                              '/addtime - задаёт время отправки сообщения. По умолчанию в 23:59 \n'
@@ -52,9 +53,10 @@ async def CommandMenuKeyboard(message: types.Message):
 async def CommandAddChatsKeyboard(callback: types.CallbackQuery):
     if await ChatsHandler.CheckUserRightsIsBotAccess(callback.from_user.id):
         await callback.message.answer('/addchat - добавить чат в список чатов \n'
-                             '/infochats - информация о чатах\n'
-                             '/cancel - отменить предыдущее действие'
-                             , reply_markup=Keyboards.keyboardChats)
+                                      '/deletechat - удалить чат из списка чатов \n'
+                                      '/infochats - информация о чатах\n'
+                                      '/cancel - отменить предыдущее действие'
+                                      , reply_markup=Keyboards.keyboardChats)
         await callback.answer()
     else:
         await callback.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
@@ -94,9 +96,10 @@ async def CommandSendMessageAll(message: types.Message, state = FSMContext):
 async def CommandUsers(callback: types.CallbackQuery):
     if await ChatsHandler.CheckUserRightsIsBotAccess(callback.from_user.id):
         await callback.message.answer('/adduser - добавить пользователя \n'
-                             '/infousers - информация о текущих пользователях\n'
-                             '/cancel - отменить предыдущее действие'
-                             , reply_markup=Keyboards.keyBoardUsers)
+                                      '/deleteuser - добавить пользователя \n'
+                                      '/infousers - информация о текущих пользователях\n'
+                                      '/cancel - отменить предыдущее действие'
+                                      , reply_markup=Keyboards.keyBoardUsers)
         await callback.answer()
     else:
         await callback.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')

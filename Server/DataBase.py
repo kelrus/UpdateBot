@@ -14,6 +14,10 @@ async def SqlAddUser(state):
         cur.execute('INSERT INTO users VALUES(?,?,?)', tuple(data.values()))
         base.commit()
 
+async def SqlDeleteUser(id):
+    cur.execute('DELETE FROM users WHERE id == ?', (int(id),)).fetchall()
+    base.commit()
+
 def SqlAddChats(id):
     cur.execute('INSERT INTO chats VALUES(?)', (id,))
     base.commit()
