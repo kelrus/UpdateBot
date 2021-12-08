@@ -23,6 +23,7 @@ async def CommandStartHelp(message: types.Message):
                              '/menu - вызывает удобное меню по боту\n\n'
                              'Управление чатами:\n'
                              '/addchat - добавить чат в список чатов \n'
+                             '/deletechat - удалить чат из списка чатов \n'
                              '/infochats - информация о чатах\n\n'
                              'Управление пользователями:\n'
                              '/adduser - добавить пользователя \n'

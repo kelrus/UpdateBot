@@ -18,6 +18,11 @@ def SqlAddChats(id):
     cur.execute('INSERT INTO chats VALUES(?)', (id,))
     base.commit()
 
+def SqlDeleteChats(id):
+    cur.execute('DELETE FROM chats WHERE id == ?', (int(id),)).fetchall()
+    base.commit()
+
+
 def SqlGetUsers():
     return cur.execute("SELECT id FROM users").fetchall()
 
