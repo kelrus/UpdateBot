@@ -23,9 +23,11 @@ keyboardMenu.insert(_delayedMessage)
 keyboardChats = ReplyKeyboardMarkup(resize_keyboard=True)
 
 _inputChat = KeyboardButton("/addchat")
+_deleteChat = KeyboardButton("/deletechat")
 _info = KeyboardButton("/infochats")
 
 keyboardChats.add(_inputChat)
+keyboardChats.insert(_deleteChat)
 keyboardChats.insert(_info)
 
 
