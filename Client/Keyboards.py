@@ -51,7 +51,9 @@ keyboardDelayed.insert(_message)
 keyBoardUsers = ReplyKeyboardMarkup(resize_keyboard=True)
 
 _addUser = KeyboardButton("/adduser")
+_deleteUser = KeyboardButton("/deleteuser")
 _infoUsers = KeyboardButton("/infousers")
 
 keyBoardUsers.add(_infoUsers)
 keyBoardUsers.add(_addUser)
+keyBoardUsers.insert(_deleteUser)

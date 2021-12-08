@@ -18,6 +18,9 @@ def DeleteChats(IdChat : str):
 async def AddUser(state):
     await DataBase.SqlAddUser(state)
 
+async def DeleteUser(IdChat : str):
+    await DataBase.SqlDeleteUser(IdChat)
+
 async def CheckUserRightsIsBotAccess(idUser: str):
     if DataBase.SqlSearchRightsById(idUser) != []:
         return True
