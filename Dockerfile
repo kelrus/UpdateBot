@@ -3,6 +3,7 @@ FROM python:3.9
 RUN mkdir -p /usr/src/app/
 RUN apt-get update && apt-get upgrade
 RUN pip install --upgrade pip
+RUN apt-get install sqlite3
 RUN pip install aiogram && pip install apscheduler
 WORKDIR /usr/src/app/
 
