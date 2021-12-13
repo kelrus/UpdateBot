@@ -9,4 +9,4 @@ Storage = MemoryStorage()
 Bot = Bot(token= TOKEN)
 Dp = Dispatcher(Bot, storage= Storage)
 
-Scheduler = AsyncIOScheduler()
+Scheduler = AsyncIOScheduler(timezone = 'Europe/Kaliningrad')

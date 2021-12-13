@@ -1,7 +1,9 @@
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 import re
 
+datetimeFormat = '%Y %m %d %H %M'
+timeFormat = '%H %M'
+dateFormat = '%Y %m %d'
 
 _data = ''
 _day = ''
@@ -46,7 +48,7 @@ def GetTime():
     return _time
 
 def SetData(data: str):
-    global  _data, _day, _month, _year, _isCurrentData
+    global  _data, _isCurrentData, _day, _month, _year
     if(str(datetime.now().date()) == data):
         _isCurrentData = True
 
@@ -57,27 +59,28 @@ def SetData(data: str):
 
 
 def SetTime(time: str):
-    global _time, _hours, _minute, _isCurrentTime
+    global _time,_isCurrentTime, _hours, _minute
 
-    if((str(datetime.now().time()))[:5] == str(time[:5])):
+    if((str(datetime.now().time().strftime(timeFormat))) == str(time)):
         _isCurrentTime = True
 
     _time = time
     _hours= str(time[0] + time[1])
     _minute = str(time[3] + time[4])
 
+
 def HandlerMessageOnDataTime(message: str):
     global _isCurrentData, _isCurrentTime
     if IsCorrectData(message[:8]):
-        SetData('20' + message[6] + message[7] + "-" + message[3] + message[4] + "-" + message[:2])
+        SetData('20' + message[6] + message[7] + " " + message[3] + message[4] + " " + message[:2])
         message = message[9:]
     else:
-        SetData(str(datetime.now().date()))
+        SetData(str(datetime.now().date().strftime(dateFormat)))
     if IsCorrectTime(message):
-        SetTime(message[:5])
+        SetTime(message[0]+ message[1] + " " + message[3] + message [4])
         message = message[6:]
     else:
-        SetTime(str(datetime.now().time()))
+        SetTime(str(datetime.now().time().strftime(timeFormat)))
     return message
 
 def IsCorrectData(data: str):
