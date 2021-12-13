@@ -27,7 +27,7 @@ async def CommandStartHelp(message: types.Message):
                              '/infochats - информация о чатах\n\n'
                              'Управление пользователями:\n'
                              '/adduser - добавить пользователя \n'
-                             '/deleteuser - добавить пользователя \n'
+                             '/deleteuser - удалить пользователя \n'
                              '/infousers - информация о текущих пользователях\n\n'
                              'Управление сообщениями:\n'
                              '/addmessage - написать отложенное сообщение\n')
