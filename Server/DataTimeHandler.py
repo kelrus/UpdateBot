@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 import re
 
 datetimeFormat = '%Y %m %d %H %M'
-timeFormat = '%H %M'
-dateFormat = '%Y %m %d'
+timeFormat = '%H:%M'
+dateFormat = '%d.%m.%Y'
 
 _data = ''
 _day = ''
@@ -49,7 +49,7 @@ def GetTime():
 
 def SetData(data: str):
     global  _data, _isCurrentData, _day, _month, _year
-    if(str(datetime.now().date()) == data):
+    if(str(datetime.now().date().strftime(dateFormat)) == str(data)):
         _isCurrentData = True
 
     _data = data
@@ -72,12 +72,12 @@ def SetTime(time: str):
 def HandlerMessageOnDataTime(message: str):
     global _isCurrentData, _isCurrentTime
     if IsCorrectData(message[:8]):
-        SetData('20' + message[6] + message[7] + " " + message[3] + message[4] + " " + message[:2])
+        SetData(message[:6] + '20' + message[6] + message[7])
         message = message[9:]
     else:
         SetData(str(datetime.now().date().strftime(dateFormat)))
     if IsCorrectTime(message):
-        SetTime(message[0]+ message[1] + " " + message[3] + message [4])
+        SetTime(message[:5])
         message = message[6:]
     else:
         SetTime(str(datetime.now().time().strftime(timeFormat)))
