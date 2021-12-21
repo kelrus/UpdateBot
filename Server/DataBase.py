@@ -8,6 +8,8 @@ def SqlStart():
     base.commit()
     base.execute('CREATE TABLE IF NOT EXISTS chats(id INT PRIMARY KEY)')
     base.commit()
+    base.execute('CREATE TABLE IF NOT EXISTS message(time TEXT PRIMARY KEY, message TEXT)')
+    base.commit()
 
 async def SqlAddUser(state):
     async with state.proxy() as data:
@@ -16,6 +18,14 @@ async def SqlAddUser(state):
 
 async def SqlDeleteUser(id):
     cur.execute('DELETE FROM users WHERE id == ?', (int(id),)).fetchall()
+    base.commit()
+
+def SqlAddMessage(message, time):
+    cur.execute('INSERT INTO message VALUES(?,?)', (str(time), str(message),))
+    base.commit()
+
+def SqlDeleteMessage(time):
+    cur.execute('DELETE FROM message WHERE time == ?', (time,)).fetchall()
     base.commit()
 
 def SqlAddChats(id):

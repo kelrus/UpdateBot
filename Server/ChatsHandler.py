@@ -9,11 +9,17 @@ def GetUsersInfo():
 def GetChats():
     return DataBase.SqlGetChats()
 
-def AddChats(IdChat : str):
-    DataBase.SqlAddChats(IdChat)
+def AddChats(idChat : str):
+    DataBase.SqlAddChats(idChat)
 
-def DeleteChats(IdChat : str):
-    DataBase.SqlDeleteChats(IdChat)
+def DeleteChats(dChat : str):
+    DataBase.SqlDeleteChats(dChat)
+
+def AddMessage(message : str, time: str):
+    DataBase.SqlAddMessage(message, time)
+
+def DeleteMessage(time : str):
+    DataBase.SqlDeleteMessage(time)
 
 async def AddUser(state):
     await DataBase.SqlAddUser(state)
