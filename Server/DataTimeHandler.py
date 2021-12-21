@@ -1,10 +1,17 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+import pytz
+from tzlocal import get_localzone
 import re
 
 datetimeFormat = '%Y %m %d %H %M'
 timeFormat = '%H:%M'
 dateFormat = '%d.%m.%Y'
 
+
+tzMoscow = pytz.timezone("Europe/Moscow")
+tzLocal = get_localzone()
+deltaLocal = abs(tzMoscow.localize(datetime.now()) - tzLocal.localize(datetime.now()).astimezone(tzMoscow))
+print((datetime.now() + timedelta(seconds=deltaLocal.seconds)).strftime('%Y-%m-%Y %H:%M:00'))
 _data = ''
 _day = ''
 _month = ''
@@ -35,6 +42,10 @@ def GetDataTime(alarm = False):
         return datetime(int(_year),int(_month),int(_day),int(_hours),int(_minute)) - timedelta(minutes=30)
     return datetime(int(_year),int(_month),int(_day),int(_hours),int(_minute))
 
+def GetCurrentDataTime():
+    return (datetime.now() + timedelta(seconds=deltaLocal.seconds)).strftime('%Y-%m-%Y %H:%M:00')
+
+
 def GetDay():
     return _day
 
@@ -53,9 +64,9 @@ def SetData(data: str):
         _isCurrentData = True
 
     _data = data
-    _day = str(data[8] + data[9])
-    _month = str(data[5] + data[6])
-    _year = str(data[0] + data[1] + data[2] + data[3])
+    _day = str(data[0] + data[1])
+    _month = str(data[3] + data[4])
+    _year = str(data[6] + data[7] + data[8] + data[9])
 
 
 def SetTime(time: str):
