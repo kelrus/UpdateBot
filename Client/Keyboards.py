@@ -8,7 +8,7 @@ keyboardMenu = InlineKeyboardMarkup(row_width=2)
 
 _chats = InlineKeyboardButton(text="Управление чатами", callback_data='addchatkeyboard')
 _sendMessage = InlineKeyboardButton(text="Отправить сообщение", callback_data='sendmessage')
-_delayedMessage = InlineKeyboardButton(text="Отложить сообщение", callback_data='delayedmessagekeyboard')
+_delayedMessage = InlineKeyboardButton(text="Управление отложенными сообщениями", callback_data='delayedmessagekeyboard')
 _users = InlineKeyboardButton(text="Управление пользователями", callback_data='users')
 
 keyboardMenu.add(_chats)
@@ -36,10 +36,13 @@ keyboardChats.insert(_info)
 
 keyboardDelayed = ReplyKeyboardMarkup(resize_keyboard=True)
 
-_message = KeyboardButton("/addmessage")
+_addMessage = KeyboardButton("/addmessage")
 _infomessage = KeyboardButton("/infomessage")
-keyboardDelayed.add(_message)
-keyboardDelayed.insert(_infomessage)
+_deleteMessage = KeyboardButton("/deletemessage")
+
+keyboardDelayed.add(_addMessage)
+keyboardDelayed.add(_infomessage)
+keyboardDelayed.insert(_deleteMessage)
 
 
 
