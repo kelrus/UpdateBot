@@ -21,6 +21,9 @@ def AddMessage(message : str, time: str):
 def DeleteMessage(time : str):
     DataBase.SqlDeleteMessage(time)
 
+def GetMessage():
+    return DataBase.SqlGetMessage()
+
 async def AddUser(state):
     await DataBase.SqlAddUser(state)
 

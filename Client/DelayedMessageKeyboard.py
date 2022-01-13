@@ -55,8 +55,17 @@ async def _SendDelayedMessageAll(message: str, state=FSMContext):
 
 
 
+async def CommandInfoMessage(message: types.Message):
+    if await ChatsHandler.CheckUserRightsIsBotAccess(message.from_user.id):
+        await message.answer(str(ChatsHandler.GetMessage()))
+    else:
+        await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
+
+
+
 
 
 def register_handler_delayed_message():
     BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'], state=None)
     BotHandler.Dp.register_message_handler(CommandDelayedMessageAll, state=FSMStorageDelayedSendBot.replyTextDelayedSend)
+    BotHandler.Dp.register_message_handler(CommandInfoMessage, commands=['infomessage'])

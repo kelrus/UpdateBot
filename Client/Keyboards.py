@@ -37,9 +37,9 @@ keyboardChats.insert(_info)
 keyboardDelayed = ReplyKeyboardMarkup(resize_keyboard=True)
 
 _message = KeyboardButton("/addmessage")
-
+_infomessage = KeyboardButton("/infomessage")
 keyboardDelayed.add(_message)
-
+keyboardDelayed.insert(_infomessage)
 
 
 

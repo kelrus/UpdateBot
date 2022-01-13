@@ -28,6 +28,9 @@ def SqlDeleteMessage(time):
     cur.execute('DELETE FROM message WHERE time == ?', (time,)).fetchall()
     base.commit()
 
+def SqlGetMessage():
+    return cur.execute("SELECT * FROM message").fetchall()
+
 def SqlAddChats(id):
     cur.execute('INSERT INTO chats VALUES(?)', (id,))
     base.commit()
