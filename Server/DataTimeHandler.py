@@ -11,7 +11,6 @@ dateFormat = '%d.%m.%Y'
 tzMoscow = pytz.timezone("Europe/Moscow")
 tzLocal = get_localzone()
 deltaLocal = abs(tzMoscow.localize(datetime.now()) - tzLocal.localize(datetime.now()).astimezone(tzMoscow))
-print((datetime.now() + timedelta(seconds=deltaLocal.seconds)).strftime('%Y-%m-%Y %H:%M:00'))
 _data = ''
 _day = ''
 _month = ''
@@ -43,7 +42,7 @@ def GetDataTime(alarm = False):
     return datetime(int(_year),int(_month),int(_day),int(_hours),int(_minute))
 
 def GetCurrentDataTime():
-    return (datetime.now() + timedelta(seconds=deltaLocal.seconds)).strftime('%Y-%m-%Y %H:%M:00')
+    return (datetime.now() + timedelta(seconds=deltaLocal.seconds)).strftime('%Y-%m-%d %H:%M:00')
 
 
 def GetDay():
