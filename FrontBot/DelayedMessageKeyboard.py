@@ -1,7 +1,7 @@
 #Файл отвечает за управлением отложенными сообщениями с помощью ввода комманд,
 #которые пишет пользователь на стороне фронта
 
-import BotHandler
+import BotInit
 import asyncio
 from aiogram import types
 from BackBot import BackHandler, DataTimeHandler
@@ -44,17 +44,17 @@ async def __StartDelayedMessage(message: types.Message, state=FSMContext):
         async with state.proxy() as data:
             data['replyTextDelayedSend'] = str(message.text)
             for chatId in BackHandler.GetIdChats():
-                await BotHandler.Bot.send_message(int(chatId[0]), data['replyTextDelayedSend'])
+                await BotInit.Bot.send_message(int(chatId[0]), data['replyTextDelayedSend'])
     else:
         #Проверям есть ли у нас время для предупреждения о сообщении и если да, мы откладываем предупрждение и сообщение.
         #Если времени нет, то откладывается только сообщение
         if(DataTimeHandler.IsCorrectAlarmTime()):
             datetimeAlarm = DataTimeHandler.GetDataTime(True)
             messageAlarm = "Внимание, через 30 минут: \n\n" + message.text
-            BotHandler.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetimeAlarm, args=(messageAlarm, state))
+            BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetimeAlarm, args=(messageAlarm, state))
             BackHandler.AddMessage(messageAlarm, datetimeAlarm)
         datetime = DataTimeHandler.GetDataTime()
-        BotHandler.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetime,args=(message.text, state))
+        BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetime,args=(message.text, state))
         BackHandler.AddMessage(message.text, datetime)
     #После того, как мы отложили сообщение, очищаем значение времени и даты в кеше.
     DataTimeHandler.Clear()
@@ -66,7 +66,7 @@ async def __SendDelayedMessageAll(message: str, state=FSMContext):
     async with state.proxy() as data:
         data['replyTextDelayedSend'] = str(message)
         for chatId in BackHandler.GetIdChats():
-            await BotHandler.Bot.send_message(int(chatId[0]), data['replyTextDelayedSend'])
+            await BotInit.Bot.send_message(int(chatId[0]), data['replyTextDelayedSend'])
             BackHandler.DeleteMessage(DataTimeHandler.GetCurrentDataTime())
     await state.finish()
 
@@ -102,8 +102,8 @@ async def __CommandDeleteMessage(message: types.Message, state=FSMContext):
 #Регистрация команд для управления задерженными сообщениями.
 
 def register_handler_delayed_message():
-    BotHandler.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'], state=None)
-    BotHandler.Dp.register_message_handler(__CommandDelayedMessageAll, state=FSMStorageDelayedSendBot.replyTextDelayedSend)
-    BotHandler.Dp.register_message_handler(CommandInfoMessage, commands=['infomessage'])
-    BotHandler.Dp.register_message_handler(CommandDeleteMessageInput, commands=['deletemessage'], state=None)
-    BotHandler.Dp.register_message_handler(__CommandDeleteMessage, state=FSMStorageDelayedSendBot.replyTextDelete)
+    BotInit.Dp.register_message_handler(CommandDelayedMessage, commands=['addmessage'], state=None)
+    BotInit.Dp.register_message_handler(__CommandDelayedMessageAll, state=FSMStorageDelayedSendBot.replyTextDelayedSend)
+    BotInit.Dp.register_message_handler(CommandInfoMessage, commands=['infomessage'])
+    BotInit.Dp.register_message_handler(CommandDeleteMessageInput, commands=['deletemessage'], state=None)
+    BotInit.Dp.register_message_handler(__CommandDeleteMessage, state=FSMStorageDelayedSendBot.replyTextDelete)

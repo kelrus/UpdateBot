@@ -1,6 +1,6 @@
 #Данный файл отвечает за управление чатами пользователем на фронте с помощью команд.
 
-import BotHandler
+import BotInit
 from aiogram import types
 from BackBot import BackHandler
 from aiogram.dispatcher import FSMContext
@@ -70,8 +70,8 @@ async def CommandInfoChats(message: types.Message):
 #Регистрация комманд для соответствующих функций управления чатами на боте.
 
 def register_handler_chats():
-    BotHandler.Dp.register_message_handler(CommandAddChatInput, commands=['addchat'], state = None)
-    BotHandler.Dp.register_message_handler(__CommandAddChat, state=FSMStorageChatsBot.replyInputAddChat)
-    BotHandler.Dp.register_message_handler(CommandDeleteChatInput, commands=['deletechat'], state=None)
-    BotHandler.Dp.register_message_handler(__CommandDeleteChat, state=FSMStorageChatsBot.replyInputDeleteChat)
-    BotHandler.Dp.register_message_handler(CommandInfoChats, commands=['infochats'])
+    BotInit.Dp.register_message_handler(CommandAddChatInput, commands=['addchat'], state = None)
+    BotInit.Dp.register_message_handler(__CommandAddChat, state=FSMStorageChatsBot.replyInputAddChat)
+    BotInit.Dp.register_message_handler(CommandDeleteChatInput, commands=['deletechat'], state=None)
+    BotInit.Dp.register_message_handler(__CommandDeleteChat, state=FSMStorageChatsBot.replyInputDeleteChat)
+    BotInit.Dp.register_message_handler(CommandInfoChats, commands=['infochats'])

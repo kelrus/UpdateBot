@@ -1,5 +1,5 @@
 #Файл для управления общими частями бота в виде клавиатуры-меню.
-import BotHandler
+import BotInit
 from aiogram import types
 from FrontBot import Keyboards
 from BackBot import BackHandler
@@ -110,7 +110,7 @@ async def __CommandSendMessageAll(message: types.Message, state = FSMContext):
     async with state.proxy() as data:
         data['replyTextSend'] = message.text
     for chatid in BackHandler.GetIdChats():
-        await BotHandler.Bot.send_message(int(chatid[0]), data['replyTextSend'])
+        await BotInit.Bot.send_message(int(chatid[0]), data['replyTextSend'])
     await state.finish()
 
 
@@ -119,10 +119,10 @@ async def __CommandSendMessageAll(message: types.Message, state = FSMContext):
 #Регистрация общих комманд для меню
 
 def register_handler_menu():
-    BotHandler.Dp.register_message_handler(CommandMenuKeyboard, commands=['menu'])
-    BotHandler.Dp.register_message_handler(CommandStartHelp, commands=['start', 'help'])
-    BotHandler.Dp.register_callback_query_handler(CommandAddChatsKeyboard, text=['addchatkeyboard'])
-    BotHandler.Dp.register_callback_query_handler(CommandAddDelayedMessageKeyboard, text='delayedmessagekeyboard')
-    BotHandler.Dp.register_callback_query_handler(CommandSendMessage, text='sendmessage', state = None)
-    BotHandler.Dp.register_message_handler(__CommandSendMessageAll, state=FSMStorageSendBot.replyTextSend)
-    BotHandler.Dp.register_callback_query_handler(CommandUsers, text='users')
+    BotInit.Dp.register_message_handler(CommandMenuKeyboard, commands=['menu'])
+    BotInit.Dp.register_message_handler(CommandStartHelp, commands=['start', 'help'])
+    BotInit.Dp.register_callback_query_handler(CommandAddChatsKeyboard, text=['addchatkeyboard'])
+    BotInit.Dp.register_callback_query_handler(CommandAddDelayedMessageKeyboard, text='delayedmessagekeyboard')
+    BotInit.Dp.register_callback_query_handler(CommandSendMessage, text='sendmessage', state = None)
+    BotInit.Dp.register_message_handler(__CommandSendMessageAll, state=FSMStorageSendBot.replyTextSend)
+    BotInit.Dp.register_callback_query_handler(CommandUsers, text='users')

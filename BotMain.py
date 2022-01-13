@@ -1,8 +1,9 @@
+#Файл запуска бота
 from aiogram.utils import executor
-from BotHandler import Dp
-from Client import ClientHandler
-from Server import DataBase
-import BotHandler
+from BotInit import Dp
+from FrontBot import FrontHandler
+from BackBot import DataBase
+import BotInit
 import asyncio
 
 
@@ -10,11 +11,15 @@ import asyncio
 
 
 async def scheduler():
-    BotHandler.Scheduler.start()
+    BotInit.Scheduler.start()
 
+#Запуск работы бота
 async def on_startup(_):
-    ClientHandler.register_handler_client()
+    #Запуск регистрации всех комманд на боте
+    FrontHandler.register_handler_client()
+    #Запуск базы данных
     DataBase.SqlStart()
+    #Запуск cron обработчика
     asyncio.create_task(scheduler())
 
 

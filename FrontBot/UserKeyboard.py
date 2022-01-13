@@ -1,6 +1,6 @@
 #Данный файл отвечает за управление пользователями на фронте с помощью команд.
 
-import BotHandler
+import BotInit
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -79,10 +79,10 @@ async def __CommandDeleteUser(message: types.Message, state=FSMContext):
 #Регистрация комманд на боте
 
 def register_handler_users():
-    BotHandler.Dp.register_message_handler(CommandAddUserBot, commands=['adduser'], state = None)
-    BotHandler.Dp.register_message_handler(__CommandReplyIdFSM, state=FSMStorageUserBot.replyTextUserId)
-    BotHandler.Dp.register_message_handler(__CommandReplyNameFSM, state=FSMStorageUserBot.replyTextUserName)
-    BotHandler.Dp.register_message_handler(__CommandReplyRightsFSM, state=FSMStorageUserBot.replyTextUserRights)
-    BotHandler.Dp.register_message_handler(CommandInfoUsers, commands=['infousers'], state=None)
-    BotHandler.Dp.register_message_handler(CommandDeleteUserInput, commands=['deleteuser'], state=None)
-    BotHandler.Dp.register_message_handler(__CommandDeleteUser, state=FSMStorageUserBot.replyTextUserDelete)
+    BotInit.Dp.register_message_handler(CommandAddUserBot, commands=['adduser'], state = None)
+    BotInit.Dp.register_message_handler(__CommandReplyIdFSM, state=FSMStorageUserBot.replyTextUserId)
+    BotInit.Dp.register_message_handler(__CommandReplyNameFSM, state=FSMStorageUserBot.replyTextUserName)
+    BotInit.Dp.register_message_handler(__CommandReplyRightsFSM, state=FSMStorageUserBot.replyTextUserRights)
+    BotInit.Dp.register_message_handler(CommandInfoUsers, commands=['infousers'], state=None)
+    BotInit.Dp.register_message_handler(CommandDeleteUserInput, commands=['deleteuser'], state=None)
+    BotInit.Dp.register_message_handler(__CommandDeleteUser, state=FSMStorageUserBot.replyTextUserDelete)
