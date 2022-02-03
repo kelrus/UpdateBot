@@ -1,6 +1,7 @@
 #Файл для управления общими частями бота в виде клавиатуры-меню.
 import BotInit
 from aiogram import types
+from aiogram.utils.exceptions import BotKicked
 from FrontBot import Keyboards
 from BackBot import BackHandler
 from aiogram.dispatcher import FSMContext
@@ -110,7 +111,10 @@ async def __CommandSendMessageAll(message: types.Message, state = FSMContext):
     async with state.proxy() as data:
         data['replyTextSend'] = message.text
     for chatid in BackHandler.GetIdChats():
-        await BotInit.Bot.send_message(int(chatid[0]), data['replyTextSend'])
+        try:
+            await BotInit.Bot.send_message(int(chatid[0]), data['replyTextSend'])
+        except BotKicked:
+            await message.answer(str(chatid[0]) + ' - бот не добавлен в данный чат')
     await state.finish()
 
 

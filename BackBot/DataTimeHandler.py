@@ -29,6 +29,7 @@ _year = ''
 _time = ''
 _hours = ''
 _minute = ''
+_seconds = '00'
 _isCurrentData = False
 _isCurrentTime = False
 
@@ -74,8 +75,8 @@ def GetTime():
 def GetDataTime(alarm = False):
     #Если сообщения является предупреждением, то выставить время на 30 минут раньше
     if(alarm):
-        return datetime(int(_year),int(_month),int(_day),int(_hours),int(_minute)) - timedelta(minutes=30)
-    return datetime(int(_year),int(_month),int(_day),int(_hours),int(_minute))
+        return datetime(int(_year), int(_month), int(_day), int(_hours), int(_minute), int(_seconds)) - timedelta(minutes=30)
+    return datetime(int(_year), int(_month), int(_day), int(_hours), int(_minute), int(_seconds))
 
 #Получение текущего рабочего времени
 def GetCurrentDataTime():
