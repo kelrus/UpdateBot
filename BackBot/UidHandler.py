@@ -1,5 +1,5 @@
 # Файл генерации uid по id сообщения в планировщике, дате отправки сообщения и тексту сообщения.
-
+from datetime import datetime
 
 
 
@@ -16,7 +16,7 @@ def __TableUid(dig, base):
     if quotient == 0:
         return __table[remainder]
     else:
-        return str(TableUid(quotient, base)) + str(__table[remainder])
+        return str(__TableUid(quotient, base)) + str(__table[remainder])
 
 
 
@@ -30,18 +30,18 @@ def __StepGenUid(num: int):
 
 def __SplittingMessageIntoASC(message):
 
-    step = StepGenUid(len(message))
+    step = __StepGenUid(len(message))
 
     newMessageASC = []
     currentNum = 0
     while currentNum + step <= len(message):
         newSymbolMessageASC = 0
         num = 0
-        while n < step:
+        while num < step:
             newSymbolMessageASC += ord(message[currentNum  + num])
             num += 1
         currentNum += int(step)
-        NewMessageASC.append(newSymbolMessageASC)
+        newMessageASC.append(newSymbolMessageASC)
 
     return newMessageASC
 
@@ -55,8 +55,9 @@ def __GetTaleMessageUid(message):
 
 
 
-def GenerateMessageUid(messageid, data, message):
+def GenerateMessageUid(messageid, data : datetime, message):
 
+    time = data.hour + data.day + data.year + data.month + data.minute
     messageASCII = __SplittingMessageIntoASC(message)
     messageUID = ''
     step = __StepGenUid(len(message))
@@ -72,8 +73,8 @@ def GenerateMessageUid(messageid, data, message):
         if(stepGenUid % 2 == 0):
             symUID = sym + taleMessage + messageid
         else:
-            symUID = sym + messageid + int(data)
+            symUID = sym + messageid + int(time)
         stepGenUid += 1
-        symUID = TableUid(symUID, 16)
+        symUID = __TableUid(symUID, 16)
         messageUID += str(symUID)
     return messageUID
