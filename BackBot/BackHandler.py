@@ -1,6 +1,6 @@
 #Файл отвечает за взаимосвязь Фронта и Бэка
 from BackBot import DataBase
-
+from BackBot import UidHandler
 
 
 
@@ -43,8 +43,8 @@ def DeleteChats(idChat : str):
 #Блок для работы с сообщениями в БД
 
 #Добавляет собщение в БД. Для хранения передаётся текст сообщения и его время отправления
-def AddMessage(message : str, time: str):
-    DataBase.SqlAddMessage(message, time)
+def AddMessage(message : str, time: str, uid:str):
+    DataBase.SqlAddMessage(message, time, uid)
 
 #Удаляет сообщение из БД с помощью его времени отправления
 def DeleteMessage(time : str):
@@ -53,4 +53,10 @@ def DeleteMessage(time : str):
 #Получение информации о всех хранящихся сообщениях
 def GetMessage():
     return DataBase.SqlGetMessage()
+
+
+#Блок для работы с uid сообщения
+
+def GetUidMessage(meageid, data, message):
+    return UidHandler.GenerateMessageUid(messageid, data, message)
 

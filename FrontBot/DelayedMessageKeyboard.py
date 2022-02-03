@@ -56,8 +56,9 @@ async def __StartDelayedMessage(message: types.Message, state=FSMContext):
             BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetimeAlarm, args=(messageAlarm,userid, state),id = str(datetimeAlarm))
             BackHandler.AddMessage(messageAlarm, datetimeAlarm)
         datetime = DataTimeHandler.GetDataTime()
+        uid = ""
         BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetime,args=(message.text,userid, state,), id = str(datetime))
-        BackHandler.AddMessage(message.text, datetime)
+        BackHandler.AddMessage(message.text, datetime, uid)
     #После того, как мы отложили сообщение, очищаем значение времени и даты в кеше.
     DataTimeHandler.Clear()
 
