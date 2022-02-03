@@ -40,6 +40,8 @@ async def __StartDelayedMessage(message: types.Message, state=FSMContext):
     #Передаём в Бек сообщение для его проверки на наличие в нём даты и времени и последующей обработки этих данных.
     #Возвращаемым значением является чистое сообщение без даты и времени.
     message.text = DataTimeHandler.HandlerMessageOnDataTime(message.text)
+    messageId = message.message_id
+    print(messageId)
     userid = message.from_user.id
     #Проверяем является ли заданное время в сообщении текущим. Если да - то немедленно отправляем его в чаты.
     if(DataTimeHandler.IsCurrentDataTime()):
@@ -53,11 +55,12 @@ async def __StartDelayedMessage(message: types.Message, state=FSMContext):
         if(DataTimeHandler.IsCorrectAlarmTime()):
             datetimeAlarm = DataTimeHandler.GetDataTime(True)
             messageAlarm = "Внимание, через 30 минут: \n\n" + message.text
-            BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetimeAlarm, args=(messageAlarm,userid, state),id = str(datetimeAlarm))
-            BackHandler.AddMessage(messageAlarm, datetimeAlarm)
+            uidAlarm = BackHandler.GetUidMessage(messageId, datetimeAlarm, messageAlarm)
+            BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetimeAlarm, args=(messageAlarm, userid, uidAlarm, state),id = uidAlarm)
+            BackHandler.AddMessage(messageAlarm, datetimeAlarm, uidAlarm)
         datetime = DataTimeHandler.GetDataTime()
-        uid = ""
-        BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetime,args=(message.text,userid, state,), id = str(datetime))
+        uid = BackHandler.GetUidMessage(messageId, datetime, message.text)
+        BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetime,args=(message.text, userid, uid, state,), id = uid)
         BackHandler.AddMessage(message.text, datetime, uid)
     #После того, как мы отложили сообщение, очищаем значение времени и даты в кеше.
     DataTimeHandler.Clear()
@@ -65,7 +68,7 @@ async def __StartDelayedMessage(message: types.Message, state=FSMContext):
     await state.finish()
 
 #Это событие, которое запускается в назначенных момент по дате и времени и отправляет сообщения в чаты.
-async def __SendDelayedMessageAll(message: str, userid, state=FSMContext):
+async def __SendDelayedMessageAll(message: str, userid, uid,  state=FSMContext):
     async with state.proxy() as data:
         data['replyTextDelayedSend'] = str(message)
         for chatId in BackHandler.GetIdChats():
@@ -74,7 +77,7 @@ async def __SendDelayedMessageAll(message: str, userid, state=FSMContext):
                 await BotInit.Bot.send_message(int(chatId[0]), data['replyTextDelayedSend'])
             except BotKicked:
                 await BotInit.Bot.send_message(userid, str(chatId[0]) + ' - бот не добавлен в данный чат')
-        BackHandler.DeleteMessage(DataTimeHandler.GetCurrentDataTime())
+        BackHandler.DeleteMessage(uid)
     await state.finish()
 
 
@@ -92,7 +95,7 @@ async def CommandInfoMessage(message: types.Message):
 async def CommandDeleteMessageInput(message: types.Message):
     if await BackHandler.CheckUserRightsIsBotAccess(message.from_user.id):
         await FSMStorageDelayedSendBot.replyTextDelete.set()
-        await message.answer('Введите время сообщения, которое хотите удалить в формате гг-мм-дд чч:мм:00')
+        await message.answer('Введите uid сообщения, которое хотите удалить')
     else:
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 

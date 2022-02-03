@@ -16,7 +16,7 @@ def SqlStart():
     base.commit()
     base.execute('CREATE TABLE IF NOT EXISTS chats(id INT PRIMARY KEY)')
     base.commit()
-    base.execute('CREATE TABLE IF NOT EXISTS message(time TEXT PRIMARY KEY, message TEXT, uid TEXT)')
+    base.execute('CREATE TABLE IF NOT EXISTS message(time TEXT, message TEXT, uid TEXT PRIMARY KEY)')
     base.commit()
 
 
@@ -41,11 +41,14 @@ def SqlSearchRightsById(id):
 #Блок по работе с сообщениями
 
 def SqlAddMessage(message, time, uid):
+    print(message)
+    print(time)
+    print(uid)
     cur.execute('INSERT INTO message VALUES(?,?,?)', (str(time), str(message), str(uid)))
     base.commit()
 
-def SqlDeleteMessage(time):
-    cur.execute('DELETE FROM message WHERE time == ?', (time,)).fetchall()
+def SqlDeleteMessage(uid):
+    cur.execute('DELETE FROM message WHERE uid == ?', (uid,)).fetchall()
     base.commit()
 
 def SqlGetMessage():

@@ -57,6 +57,6 @@ def GetMessage():
 
 #Блок для работы с uid сообщения
 
-def GetUidMessage(meageid, data, message):
+def GetUidMessage(messageid, data, message):
     return UidHandler.GenerateMessageUid(messageid, data, message)
 
