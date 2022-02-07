@@ -173,8 +173,8 @@ def IsCorrectAlarmTime():
     return False
 
 #Проверяем является ли данная дата уже прошедншей
-def IsCorrectDateTime(datetimeIs: datetime):
-    if datetime.now() < datetimeIs :
+def IsCorrectDateTime(datetimeIs):
+    if datetime.now() + deltaLocal < datetime.strptime(datetimeIs, "%Y-%m-%d %H:%M:00"):
         return True
     return False
 
