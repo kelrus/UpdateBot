@@ -1,7 +1,9 @@
 #Файл отвечает за взаимосвязь Фронта и Бэка
 from BackBot import DataBase
 from BackBot import UidHandler
-
+from BackBot import DataTimeHandler
+from aiogram.utils.exceptions import BotKicked
+import BotInit
 
 
 #Блок по получению и изменению данных пользователя в БД
@@ -47,12 +49,12 @@ def AddMessage(message : str, time: str, uid:str):
     DataBase.SqlAddMessage(message, time, uid)
 
 #Удаляет сообщение из БД с помощью его времени отправления
-def DeleteMessage(time : str):
-    DataBase.SqlDeleteMessage(time)
+def DeleteMessage(uid : str):
+    DataBase.SqlDeleteMessage(uid)
 
 #Получение информации о всех хранящихся сообщениях
-def GetMessage():
-    return DataBase.SqlGetMessage()
+def GetMessages():
+    return DataBase.SqlGetMessages()
 
 
 #Блок для работы с uid сообщения
@@ -60,3 +62,33 @@ def GetMessage():
 def GetUidMessage(messageid, data, message):
     return UidHandler.GenerateMessageUid(messageid, data, message)
 
+
+#Блок запуска работа серверной части приложения
+
+#Это функция, которая регистрирует отложенные сообщения на прямую из базы данных при запуске бота
+def GetStartedBack():
+    DataBase.SqlStart()
+    messagesInBase = GetMessages()
+    print(len(messagesInBase))
+
+    for message in messagesInBase:
+        print(message)
+        datetime = message[0]
+        messageText = message[1]
+        uid = message[2]
+
+        if DataTimeHandler.IsCorrectDateTime(datetime):
+            BotInit.Scheduler.add_job(__SendDelayedMessageAll, 'date', run_date=datetime, args=(messageText, uid,), id=uid)
+        else:
+            DeleteMessage(uid)
+
+#Это событие, которое запускается в назначенных момент по дате и времени и отправляет сообщения в чаты.
+async def __SendDelayedMessageAll(message: str, uid,):
+        chatsId = GetIdChats()
+        for chatId in chatsId:
+            #Обработка исключения, которое возникает в том случаи, если бот не добавлен в чат, но пытается отправить туда сообщение
+            try:
+                await BotInit.Bot.send_message(int(chatId[0]), message)
+            except BotKicked:
+                print("Error sending message from database when starting bot. The bot has not been added to the chat.")
+        DeleteMessage(uid)

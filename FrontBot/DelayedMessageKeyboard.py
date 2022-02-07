@@ -41,7 +41,6 @@ async def __StartDelayedMessage(message: types.Message, state=FSMContext):
     #Возвращаемым значением является чистое сообщение без даты и времени.
     message.text = DataTimeHandler.HandlerMessageOnDataTime(message.text)
     messageId = message.message_id
-    print(messageId)
     userid = message.from_user.id
     #Проверяем является ли заданное время в сообщении текущим. Если да - то немедленно отправляем его в чаты.
     if(DataTimeHandler.IsCurrentDataTime()):
@@ -83,9 +82,10 @@ async def __SendDelayedMessageAll(message: str, userid, uid,  state=FSMContext):
 
 #Блок отвечает за получение информации об отложенных сообщениях в Беке с помощью комманд,
 #введеных пользователем на фронте
+
 async def CommandInfoMessage(message: types.Message):
     if await BackHandler.CheckUserRightsIsBotAccess(message.from_user.id):
-        await message.answer(str(BackHandler.GetMessage()))
+        await message.answer(str(BackHandler.GetMessages()))
     else:
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 

@@ -2,6 +2,7 @@
 from aiogram.utils import executor
 from BotInit import Dp
 from FrontBot import FrontHandler
+from BackBot import BackHandler
 from BackBot import DataBase
 import BotInit
 import asyncio
@@ -18,7 +19,7 @@ async def on_startup(_):
     #Запуск регистрации всех комманд на боте
     FrontHandler.register_handler_client()
     #Запуск базы данных
-    DataBase.SqlStart()
+    BackHandler.GetStartedBack()
     #Запуск cron обработчика
     asyncio.create_task(scheduler())
 

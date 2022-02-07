@@ -172,6 +172,13 @@ def IsCorrectAlarmTime():
         return True
     return False
 
+#Проверяем является ли данная дата уже прошедншей
+def IsCorrectDateTime(datetimeIs: datetime):
+    if datetime.now() < datetimeIs :
+        return True
+    return False
+
+
 
 #Блок обработки даты и времени
 

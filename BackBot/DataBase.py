@@ -41,9 +41,6 @@ def SqlSearchRightsById(id):
 #Блок по работе с сообщениями
 
 def SqlAddMessage(message, time, uid):
-    print(message)
-    print(time)
-    print(uid)
     cur.execute('INSERT INTO message VALUES(?,?,?)', (str(time), str(message), str(uid)))
     base.commit()
 
@@ -51,7 +48,7 @@ def SqlDeleteMessage(uid):
     cur.execute('DELETE FROM message WHERE uid == ?', (uid,)).fetchall()
     base.commit()
 
-def SqlGetMessage():
+def SqlGetMessages():
     return cur.execute("SELECT * FROM message").fetchall()
 
 
