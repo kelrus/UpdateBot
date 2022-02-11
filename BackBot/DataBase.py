@@ -9,7 +9,7 @@ import sqlite3 as sq
 def SqlStart():
     global base, cur
     #Попытка подсоединиться к БД. Если её нет - создает.
-    base = sq.connect('updatebot.db')
+    base = sq.connect('DataBase/updatebot.db')
     cur = base.cursor()
     #Инициализация таблиц в БД
     base.execute('CREATE TABLE IF NOT EXISTS users(id INT PRIMARY KEY, name TEXT, rights TEXT)')
