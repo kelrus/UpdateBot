@@ -2,6 +2,7 @@
 from BackBot import DataBase
 from BackBot import UidHandler
 from BackBot import DataTimeHandler
+from BackBot import CheckInput
 from aiogram.utils.exceptions import BotKicked
 import BotInit
 
@@ -61,6 +62,24 @@ def GetMessages():
 
 def GetUidMessage(messageid, data, message):
     return UidHandler.GenerateMessageUid(messageid, data, message)
+
+
+#Блок проверки на коректность ввода бота
+
+#Проверка текста на добавление чата
+def CheckTextAddChat(text):
+
+    if(CheckInput.CheckInputChat(text) and not DataBase.CheckChatInDb(text)):
+        return True
+    return False
+
+#Проверка текста на удаление чата
+def CheckTextDeleteChat(text):
+
+    if(CheckInput.CheckInputChat(text) and DataBase.CheckChatInDb(text)):
+        return True
+    return False
+
 
 
 #Блок запуска работа серверной части приложения

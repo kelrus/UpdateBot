@@ -28,11 +28,16 @@ async def CommandAddChatInput(message: types.Message):
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 async def __CommandAddChat(message: types.Message, state=FSMContext):
-    async with state.proxy() as data:
-        data['replyInputAddChat'] = message.text
-    async with state.proxy() as data:
-        BackHandler.AddChats(str(data['replyInputAddChat']))
-    await state.finish()
+
+    if(BackHandler.CheckTextAddChat(message.text)):
+        async with state.proxy() as data:
+            data['replyInputAddChat'] = message.text
+        async with state.proxy() as data:
+            BackHandler.AddChats(str(data['replyInputAddChat']))
+        await state.finish()
+    else:
+        await message.answer('Ввод выполнен неверно или данный id уже есть в базе данных. Допустимые символы "-0123456789" ')
+        await state.finish()
 
 
 #Блок отвечает за удаление чата. При вводе пользователем команды удаления чата,
@@ -46,11 +51,14 @@ async def CommandDeleteChatInput(message: types.Message):
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 async def __CommandDeleteChat(message: types.Message, state=FSMContext):
-    async with state.proxy() as data:
-        data['replyInputDeleteChat'] = message.text
-    async with state.proxy() as data:
-        BackHandler.DeleteChats(str(data['replyInputDeleteChat']))
-    await state.finish()
+    if (BackHandler.CheckTextDeleteChat(message.text)):
+        async with state.proxy() as data:
+            data['replyInputDeleteChat'] = message.text
+        async with state.proxy() as data:
+            BackHandler.DeleteChats(str(data['replyInputDeleteChat']))
+        await state.finish()
+    else:
+        await message.answer('Ввод выполнен неверно или данного id нет в базе данных. Допустимые символы "-0123456789" ')
 
 
 #Блок отвечает за вывод хранящихся в боте чатах. После вводе команды пользователем,

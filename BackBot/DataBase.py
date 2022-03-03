@@ -65,4 +65,10 @@ def SqlDeleteChats(id):
 def SqlGetIdChats():
     return cur.execute("SELECT id FROM chats").fetchall()
 
+#Проверка наличия id чата в бд
+def CheckChatInDb(chatId):
+    if(cur.execute('SELECT id FROM chats WHERE id == ?', (int(chatId),)).fetchall()):
+        return True
+    return False
+
 
