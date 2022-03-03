@@ -34,6 +34,11 @@ async def CommandDelayedMessage(message: types.Message):
 async def __CommandDelayedMessageAll(message: types.Message, state=FSMContext):
     #С помощью асинхроного метода запускаем обработку отложеного сообщения.
     #В качестве данных передаём сообщение пользователя и событие.
+    textCheck = message.text
+    if not(DataTimeHandler.IsCorrectData(textCheck[:8])):
+        await message.answer('Внимание, введённая дата не соотвествует формату дд.мм.гг. Будет использована текущая дата.')
+    if not(DataTimeHandler.IsCorrectTime(textCheck)):
+        await message.answer('Внимание, введённое время не соотвествует формату чч:мм . Будет использовано текущее время.')
     asyncio.create_task(__StartDelayedMessage(message, state))
 
 async def __StartDelayedMessage(message: types.Message, state=FSMContext):
@@ -100,12 +105,16 @@ async def CommandDeleteMessageInput(message: types.Message):
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 async def __CommandDeleteMessage(message: types.Message, state=FSMContext):
-    async with state.proxy() as data:
-        data['replyTextDelete'] = message.text
-    async with state.proxy() as data:
-        BotInit.Scheduler.remove_job(data['replyTextDelete'])
+    if (BackHandler.CheckMessageDelete(message.text)):
+        async with state.proxy() as data:
+            data['replyTextDelete'] = message.text
+        async with state.proxy() as data:
+            BotInit.Scheduler.remove_job(data['replyTextDelete'])
         BackHandler.DeleteMessage(str(data['replyTextDelete']))
-    await state.finish()
+        await state.finish()
+    else:
+        await message.answer('Ввод выполнен неверно. Такого uid сообщение нет в базе данных. ')
+        await state.finish()
 
 
 

@@ -57,6 +57,13 @@ def SqlDeleteMessage(uid):
 def SqlGetMessages():
     return cur.execute("SELECT * FROM message").fetchall()
 
+#Проверка наличия uid сообщения в бд
+def CheckMessageInDb(messageUid):
+    if(cur.execute('SELECT uid FROM message WHERE uid == ?', (messageUid,)).fetchall()):
+        return True
+    return False
+
+
 
 #Блок по работе с чатами
 

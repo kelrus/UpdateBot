@@ -64,7 +64,7 @@ def GetUidMessage(messageid, data, message):
     return UidHandler.GenerateMessageUid(messageid, data, message)
 
 
-#Блок проверки на коректность ввода бота
+#Блок проверки на корректность ввода бота
 
 #Проверка текста на добавление чата
 def CheckTextAddChat(text):
@@ -87,6 +87,13 @@ def CheckTextAddUserId(text):
         return True
     return False
 
+#Проверка текста на удаление пользователя
+def CheckTextDeleteUser(text):
+
+    if(CheckInput.CheckInputUserId(text) and DataBase.CheckUserInDb(text)):
+        return True
+    return False
+
 #Проверка текста на добавление имени пользователя
 def CheckTextAddUserName(text):
 
@@ -101,10 +108,10 @@ def CheckTextAddUserRights(text):
         return True
     return False
 
-#Проверка текста на удаление пользователя
-def CheckTextDeleteUser(text):
+#Проверка на возможность удаления сообщения из БД
+def CheckMessageDelete(uid):
 
-    if(CheckInput.CheckInputUserId(text) and DataBase.CheckUserInDb(text)):
+    if(DataBase.CheckMessageInDb(uid)):
         return True
     return False
 
