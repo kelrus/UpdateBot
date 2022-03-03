@@ -37,6 +37,12 @@ def SqlGetUsersInfo():
 def SqlSearchRightsById(id):
     return cur.execute('SELECT rights FROM users WHERE id == ?', (str(id),)).fetchall()
 
+#Проверка наличия id чата в бд
+def CheckUserInDb(userId):
+    if(cur.execute('SELECT id FROM users WHERE id == ?', (int(userId),)).fetchall()):
+        return True
+    return False
+
 
 #Блок по работе с сообщениями
 

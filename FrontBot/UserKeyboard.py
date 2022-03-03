@@ -29,23 +29,35 @@ async def CommandAddUserBot(message: types.Message):
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 async def __CommandReplyIdFSM(message: types.Message, state=FSMContext):
-    async with state.proxy() as data:
-        data['replyTextUserId'] = str(message.text)
-    await FSMStorageUserBot.next()
-    await message.answer('Веедите имя пользователя')
+    if(BackHandler.CheckTextAddUserId(message.text)):
+        async with state.proxy() as data:
+            data['replyTextUserId'] = str(message.text)
+        await FSMStorageUserBot.next()
+        await message.answer('Веедите имя пользователя')
+    else:
+        await message.answer('Ввод выполнен неверно или данный id пользователя уже есть в базе данных. Допустимые символы "0123456789" ')
+        await state.finish()
 
 async def __CommandReplyNameFSM(message: types.Message, state=FSMContext):
-    async with state.proxy() as data:
-        data['replyTextUserName'] = str(message.text)
-    await FSMStorageUserBot.next()
-    await message.answer('Выберите права пользователя')
+    if(BackHandler.CheckTextAddUserName(message.text)):
+        async with state.proxy() as data:
+            data['replyTextUserName'] = str(message.text)
+        await FSMStorageUserBot.next()
+        await message.answer('Выберите права пользователя')
+    else:
+        await message.answer('Ввод выполнен неверно. Допустимые символы "qwertyuiopasdfghjklzxcvbnmйцукенгшщзхъфывапролджэячсмитьбю" и их заглавный вариант ')
+        await state.finish()
 
 async def __CommandReplyRightsFSM(message: types.Message, state=FSMContext):
-    async with state.proxy() as data:
-        data['replyTextUserRights'] = str(message.text)
-    await BackHandler.AddUser(state)
-    await state.finish()
-    await message.answer('Пользователь успешно зарегистрирован')
+    if(BackHandler.CheckTextAddUserRights(message.text)):
+        async with state.proxy() as data:
+            data['replyTextUserRights'] = str(message.text)
+        await BackHandler.AddUser(state)
+        await state.finish()
+        await message.answer('Пользователь успешно зарегистрирован')
+    else:
+        await message.answer('Ввод выполнен неверно. Допустимые права для выдачи пользователям на боте в данный момент: Admin')
+        await state.finish()
 
 
 #Блок запрашивает информацию о доступных пользователях в Бэке, после чего выводит её
@@ -67,11 +79,15 @@ async def CommandDeleteUserInput(message: types.Message):
         await message.answer('У вас нет доступа к боту. Обратитесь к администратору для их получения')
 
 async def __CommandDeleteUser(message: types.Message, state=FSMContext):
-    async with state.proxy() as data:
-        data['replyTextUserDelete'] = message.text
-    async with state.proxy() as data:
-        await BackHandler.DeleteUser(str(data['replyTextUserDelete']))
-    await state.finish()
+    if (BackHandler.CheckTextDeleteUser(message.text)):
+        async with state.proxy() as data:
+            data['replyTextUserDelete'] = message.text
+        async with state.proxy() as data:
+            await BackHandler.DeleteUser(str(data['replyTextUserDelete']))
+        await state.finish()
+    else:
+        await message.answer('Ввод выполнен неверно или данного id пользователя нет в базе данных. Допустимые символы "0123456789" ')
+        await state.finish()
 
 
 

@@ -23,7 +23,7 @@ async def DeleteUser(IdChat : str):
 
 #Проверяет есть ли у пользователя хоть какие-то права на боте
 async def CheckUserRightsIsBotAccess(idUser: str):
-    if DataBase.SqlSearchRightsById(idUser) != []:
+    if DataBase.SqlSearchRightsById(idUser) == [('Admin',)]:
         return True
     return False
 
@@ -80,6 +80,33 @@ def CheckTextDeleteChat(text):
         return True
     return False
 
+#Проверка текста на добавление id пользователя
+def CheckTextAddUserId(text):
+
+    if(CheckInput.CheckInputUserId(text) and not DataBase.CheckUserInDb(text)):
+        return True
+    return False
+
+#Проверка текста на добавление имени пользователя
+def CheckTextAddUserName(text):
+
+    if(CheckInput.CheckInputUserName(text)):
+        return True
+    return False
+
+#Проверка текста на добавление прав пользователя
+def CheckTextAddUserRights(text):
+
+    if(CheckInput.CheckInputUserRights(text)):
+        return True
+    return False
+
+#Проверка текста на удаление пользователя
+def CheckTextDeleteUser(text):
+
+    if(CheckInput.CheckInputUserId(text) and DataBase.CheckUserInDb(text)):
+        return True
+    return False
 
 
 #Блок запуска работа серверной части приложения
@@ -88,10 +115,8 @@ def CheckTextDeleteChat(text):
 def GetStartedBack():
     DataBase.SqlStart()
     messagesInBase = GetMessages()
-    print(len(messagesInBase))
 
     for message in messagesInBase:
-        print(message)
         datetime = message[0]
         messageText = message[1]
         uid = message[2]
